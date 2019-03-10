@@ -9,7 +9,6 @@ linkedin_username: tomscolaro
 #paginate_path: "/blog/page:num/"
 paginate: 3
 google_analytics: 'UA-135894616-1'
-sharethis: '<script type='text/javascript' src='//platform-api.sharethis.com/js/sharethis.js#property=5c85382bd11c6a0011c487b3&product=sticky-share-buttons' async='async'></script>'
 markdown: kramdown
 theme: minima
 
