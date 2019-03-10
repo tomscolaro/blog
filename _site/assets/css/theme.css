@@ -27,7 +27,7 @@ header .motto {
 
 
 .about-text img{
-
+  margin:  30px;
     float: right;
     display: block;
 }
