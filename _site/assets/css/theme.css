@@ -12,6 +12,47 @@ header .logo {
   display: inline-block;
 }
 
+.footersocial a{
+  display: inline-block;
+}
+
+
+ul.tech-stack {
+	list-style:none;
+	padding-left:0;
+	margin: 0 0 1.5rem 0;
+}
+ul.tech-stack li {
+	display:inline-block;
+	font-size:0.9rem;
+}
+ul.tech-stack li  {
+    background:   #1e90ff;
+    color: #333;
+    padding: 3px 10px;
+    border-radius: 3px;
+    font-weight: 500;
+    font-size: 0.93em;
+    text-transform: capitalize;
+    box-shadow: 0 6px 10px 0 rgba(169, 169, 169, 0.1);
+}
+ul.tech-stack li:hover {
+	background:rgba(0,0,0,.07);
+	text-decoration:none;
+}
+
+
+
+
+.about-text img {
+  float: right;
+  margin: 30px;
+}
+
+
+
+
+
 header .logo strong {
       color: #blue;
       font-weight: 650; }
@@ -25,15 +66,12 @@ header .motto {
     display: block;
 }
 
-
-.center {
- text-align: center;
-}
-.img-fluid {
+.center  img{
   display: block;
   margin-left: auto;
   margin-right: auto;
 }
+
 
 
 body {
@@ -565,7 +603,7 @@ ul.tags li {
 	font-size:0.9rem;
 }
 ul.tags li a {
-    background: #fff100;
+    background:   #1e90ff;
     color: #333;
     padding: 3px 10px;
     border-radius: 3px;
