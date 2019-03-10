@@ -47,8 +47,9 @@ ul.tech-stack li:hover {
 .about-text img {
   float: right;
   margin: 30px;
-  height: 450px;
+  height: 5%;
   width: auto;
+  max-height: 450px;
 }
 
 
