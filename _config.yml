@@ -11,6 +11,8 @@ paginate: 3
 google_analytics: 'UA-135894616-1'
 markdown: kramdown
 theme: minima
+disqus: 'tomscolaro-com'
+
 
 authors:
   Tom:
