@@ -41,9 +41,6 @@ ul.tech-stack li:hover {
 	text-decoration:none;
 }
 
-
-
-
 .about-text img {
   float: right;
   margin: 30px;
@@ -51,10 +48,6 @@ ul.tech-stack li:hover {
   width: auto;
   max-height: 450px;
 }
-
-
-
-
 
 header .logo strong {
       color: #blue;
