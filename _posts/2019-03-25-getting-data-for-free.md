@@ -1,8 +1,8 @@
 ---
 layout: post
-title:  "Getting "Free" Data"
+title:  "Getting 'Free' Data"
 author: Tom
-categories: [ Articles, Web Scraping,  Python, Data Wrangling, utilities]
+categories: [ Articles, Web Scraping, Python, Data Wrangling, utilities]
 image: assets/images/web-scraper.jpg
 featured: true
 project: false
