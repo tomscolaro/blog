@@ -2,7 +2,7 @@
 layout: post
 title:  "Automating Economics to Drive Growth"
 author: Tom
-categories: [ Articles, Economics, Business, Elasticity of Demand, Python, Regression, OLS]
+categories: [ Articles, Python, Economics]
 image: assets/images/elasticity-article.jpg
 featured: true
 project: false
