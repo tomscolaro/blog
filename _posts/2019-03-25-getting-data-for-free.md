@@ -3,7 +3,7 @@ layout: post
 title:  "Taking Free Data"
 author: Tom
 categories: [ Articles, Python,  utilities]
-image: assets/images/web-scraper.jpg
+image: assets/images/web-scraper-article.jpg
 featured: true
 project: false
 ---
