@@ -41,7 +41,7 @@ browser = selenium.webdriver.Firefox(executable_path=driverLocation)
 browser.get('https://www.ibisworld.com/industry-trends/market-research-reports/manufacturing/')
 ```
 
-The function .find_elements_by_xpath() method allows the browser to find specific tags, classes and ids in an HTML page. Below, we can see that I am find all <a> tags with HREF links in them. I want to iterate through these later, so I created a list I could append to from the loop. Then, I want to create a data frame, filter them down to the ones relevant to manufacturing and then return the list of strings to be navigated to later.
+The function .find_elements_by_xpath() method allows the browser to find specific tags, classes and ids in an HTML page. Below, we can see that I am find all 'a' tags with HREF links in them. I want to iterate through these later, so I created a list I could append to from the loop. Then, I want to create a data frame, filter them down to the ones relevant to manufacturing and then return the list of strings to be navigated to later.
 
 
 ```python
@@ -98,7 +98,147 @@ final.reset_index(inplace = True )
 ```
 
 
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>INDUSTRY</th>
+      <th>ANNUAL_REVENUE</th>
+      <th>COUNT_BUSINESSES</th>
+      <th>REVENUE_GROWTH_SINCE_2013</th>
+      <th>COUNT_BUSINESS_GROWTH_SINCE_2013</th>
+      <th>REVENUE_FORECAST_TO_2023</th>
+      <th>COUNT_BUSINESS_FORECAST_TO_2023</th>
+      <th>EMPLOYMENT</th>
+      <th>IMPORTS</th>
+      <th>EXPORTS</th>
+      <th>EMPLOYMENT_GROWTH_SINCE_2013</th>
+      <th>IMPORT_GROWTH_SINCE_2013</th>
+      <th>EXPORT_GROWTH_SINCE_2013</th>
+      <th>EMPLOYMENT_FORECAST_TO_2023</th>
+      <th>IMPORT_FORECAST_TO_2023</th>
+      <th>EXPORT_FORECAST_TO_2023</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Manufacturing - US Market Research Report</td>
+      <td>$6,177.2 BN</td>
+      <td>614,884</td>
+      <td>-0.5 %</td>
+      <td>0.6 %</td>
+      <td>1.5 %</td>
+      <td>0.8 %</td>
+      <td>12,096,055</td>
+      <td>$2,103.8 BN</td>
+      <td>$1,216.9 BN</td>
+      <td>1.1 %</td>
+      <td>0.8 %</td>
+      <td>-0.9 %</td>
+      <td>1.0 %</td>
+      <td>4.2 %</td>
+      <td>3.6 %</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>Apparel Manufacturing - US Market Research Report</td>
+      <td>$6,177.2 BN</td>
+      <td>614,884</td>
+      <td>-0.5 %</td>
+      <td>0.6 %</td>
+      <td>1.5 %</td>
+      <td>0.8 %</td>
+      <td>12,096,055</td>
+      <td>$2,103.8 BN</td>
+      <td>$1,216.9 BN</td>
+      <td>1.1 %</td>
+      <td>0.8 %</td>
+      <td>-0.9 %</td>
+      <td>1.0 %</td>
+      <td>4.2 %</td>
+      <td>3.6 %</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>Beverage and Tobacco Product Manufacturing - U...</td>
+      <td>$6,177.2 BN</td>
+      <td>614,884</td>
+      <td>-0.5 %</td>
+      <td>0.6 %</td>
+      <td>1.5 %</td>
+      <td>0.8 %</td>
+      <td>12,096,055</td>
+      <td>$2,103.8 BN</td>
+      <td>$1,216.9 BN</td>
+      <td>1.1 %</td>
+      <td>0.8 %</td>
+      <td>-0.9 %</td>
+      <td>1.0 %</td>
+      <td>4.2 %</td>
+      <td>3.6 %</td>
+    </tr>
+
+    <tr>
+      <th>0</th>
+      <td>Printing and Related Support Activities - US M...</td>
+      <td>$6,177.2 BN</td>
+      <td>614,884</td>
+      <td>-0.5 %</td>
+      <td>0.6 %</td>
+      <td>1.5 %</td>
+      <td>0.8 %</td>
+      <td>12,096,055</td>
+      <td>$2,103.8 BN</td>
+      <td>$1,216.9 BN</td>
+      <td>1.1 %</td>
+      <td>0.8 %</td>
+      <td>-0.9 %</td>
+      <td>1.0 %</td>
+      <td>4.2 %</td>
+      <td>3.6 %</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>Textile Manufacturing - US Market Research Report</td>
+      <td>$6,177.2 BN</td>
+      <td>614,884</td>
+      <td>-0.5 %</td>
+      <td>0.6 %</td>
+      <td>1.5 %</td>
+      <td>0.8 %</td>
+      <td>12,096,055</td>
+      <td>$2,103.8 BN</td>
+      <td>$1,216.9 BN</td>
+      <td>1.1 %</td>
+      <td>0.8 %</td>
+      <td>-0.9 %</td>
+      <td>1.0 %</td>
+      <td>4.2 %</td>
+      <td>3.6 %</td>
+    </tr>
+
+  </tbody>
+</table>
 
 
 
-From this point, the data can be store in a SQL database or as a CSV file. It can be as regressors for predictive models or even for general reporting KPIs. Web scraping is a very lucrative process. As a data scientist, we often have the tools to perform an analysis, but not necessarily the data. Data like this is just begging to be harvested to create something cool. I hope you can apply this to your own work flow. If you have any questions, please feel free to reach out.
+
+
+
+From this point, the data can be store in a SQL database or as a CSV file. It can be as regressors for predictive models or even for general reporting KPIs.
+
+ Web scraping is a very lucrative process. As a data scientist, we often have the tools to perform an analysis, but not necessarily the data. Data like this is just begging to be harvested to create something cool. I hope you can apply this to your own work flow. If you have any questions, please feel free to reach out.
