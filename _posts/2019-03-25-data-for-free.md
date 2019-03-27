@@ -240,6 +240,4 @@ final.reset_index(inplace = True )
 
 
 
-From this point, the data can be store in a SQL database or as a CSV file. It can be as regressors for predictive models or even for general reporting KPIs.
-
-Web scraping is a very lucrative process. As a data scientist, we often have the tools to perform an analysis, but not necessarily the data. Data like this is just begging to be harvested to create something cool. I hope you can apply this to your own work flow. If you have any questions, please feel free to reach out.
+From this point, the data can be store in a SQL database or as a CSV file. It can be as regressors for predictive models or even for general reporting KPIs. Web scraping is a very lucrative process. As a data scientist, we often have the tools to perform an analysis, but not necessarily the data. Data like this is just begging to be harvested to create something cool. I hope you can apply this to your own work flow. If you have any questions, please feel free to reach out.
