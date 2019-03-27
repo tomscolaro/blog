@@ -119,18 +119,7 @@ final.reset_index(inplace = True )
       <th>ANNUAL_REVENUE</th>
       <th>COUNT_BUSINESSES</th>
       <th>REVENUE_GROWTH_SINCE_2013</th>
-      <th>COUNT_BUSINESS_GROWTH_SINCE_2013</th>
-      <th>REVENUE_FORECAST_TO_2023</th>
-      <th>COUNT_BUSINESS_FORECAST_TO_2023</th>
-      <th>EMPLOYMENT</th>
-      <th>IMPORTS</th>
-      <th>EXPORTS</th>
-      <th>EMPLOYMENT_GROWTH_SINCE_2013</th>
-      <th>IMPORT_GROWTH_SINCE_2013</th>
-      <th>EXPORT_GROWTH_SINCE_2013</th>
-      <th>EMPLOYMENT_FORECAST_TO_2023</th>
-      <th>IMPORT_FORECAST_TO_2023</th>
-      <th>EXPORT_FORECAST_TO_2023</th>
+
     </tr>
   </thead>
   <tbody>
@@ -140,37 +129,15 @@ final.reset_index(inplace = True )
       <td>$6,177.2 BN</td>
       <td>614,884</td>
       <td>-0.5 %</td>
-      <td>0.6 %</td>
-      <td>1.5 %</td>
-      <td>0.8 %</td>
-      <td>12,096,055</td>
-      <td>$2,103.8 BN</td>
-      <td>$1,216.9 BN</td>
-      <td>1.1 %</td>
-      <td>0.8 %</td>
-      <td>-0.9 %</td>
-      <td>1.0 %</td>
-      <td>4.2 %</td>
-      <td>3.6 %</td>
+
+
     </tr>
     <tr>
       <th>0</th>
       <td>Apparel Manufacturing - US Market Research Report</td>
       <td>$6,177.2 BN</td>
       <td>614,884</td>
-      <td>-0.5 %</td>
-      <td>0.6 %</td>
-      <td>1.5 %</td>
-      <td>0.8 %</td>
-      <td>12,096,055</td>
-      <td>$2,103.8 BN</td>
-      <td>$1,216.9 BN</td>
-      <td>1.1 %</td>
-      <td>0.8 %</td>
-      <td>-0.9 %</td>
-      <td>1.0 %</td>
-      <td>4.2 %</td>
-      <td>3.6 %</td>
+      <td>-0.5 %</td>    
     </tr>
     <tr>
       <th>0</th>
@@ -178,38 +145,13 @@ final.reset_index(inplace = True )
       <td>$6,177.2 BN</td>
       <td>614,884</td>
       <td>-0.5 %</td>
-      <td>0.6 %</td>
-      <td>1.5 %</td>
-      <td>0.8 %</td>
-      <td>12,096,055</td>
-      <td>$2,103.8 BN</td>
-      <td>$1,216.9 BN</td>
-      <td>1.1 %</td>
-      <td>0.8 %</td>
-      <td>-0.9 %</td>
-      <td>1.0 %</td>
-      <td>4.2 %</td>
-      <td>3.6 %</td>
     </tr>
-
     <tr>
       <th>0</th>
       <td>Printing and Related Support Activities - US M...</td>
       <td>$6,177.2 BN</td>
       <td>614,884</td>
       <td>-0.5 %</td>
-      <td>0.6 %</td>
-      <td>1.5 %</td>
-      <td>0.8 %</td>
-      <td>12,096,055</td>
-      <td>$2,103.8 BN</td>
-      <td>$1,216.9 BN</td>
-      <td>1.1 %</td>
-      <td>0.8 %</td>
-      <td>-0.9 %</td>
-      <td>1.0 %</td>
-      <td>4.2 %</td>
-      <td>3.6 %</td>
     </tr>
     <tr>
       <th>0</th>
@@ -217,18 +159,6 @@ final.reset_index(inplace = True )
       <td>$6,177.2 BN</td>
       <td>614,884</td>
       <td>-0.5 %</td>
-      <td>0.6 %</td>
-      <td>1.5 %</td>
-      <td>0.8 %</td>
-      <td>12,096,055</td>
-      <td>$2,103.8 BN</td>
-      <td>$1,216.9 BN</td>
-      <td>1.1 %</td>
-      <td>0.8 %</td>
-      <td>-0.9 %</td>
-      <td>1.0 %</td>
-      <td>4.2 %</td>
-      <td>3.6 %</td>
     </tr>
 
   </tbody>
