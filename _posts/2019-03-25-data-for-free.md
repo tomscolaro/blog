@@ -9,12 +9,9 @@ project: false
 ---
 
 
-IBIS World is a data provider that researches markets and current economic trends.
-It helps give marketers and entrepreneurs understand future outlook for a specific industry. While
-IBIS does have commercial solutions for more specific data, they offer a lot of useful information for free.
+IBIS World is a data provider that researches markets and current economic trends. It helps give marketers and entrepreneurs understand future outlook for a specific industry. While IBIS does have commercial solutions for more specific data, they offer a lot of useful information for free.
 
-The goal of this script is to capture that data in a repeatable, scalable way.
-It uses web browser automation using Selenium. Selenium loans itself to a ton of flexibility, one of the applications being web scraping. This is especially powerful when web applications use JavaScript functions to generate content. As you can execute those scripts with selenium as well.
+The goal of this script is to capture that data in a repeatable, scalable way.It uses web browser automation using Selenium. Selenium loans itself to a ton of flexibility, one of the applications being web scraping. This is especially powerful when web applications use JavaScript functions to generate content. As you can execute those scripts with selenium as well.
 
 Let's dive in.
 
