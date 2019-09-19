@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.6">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-09-18T21:27:48-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Tom Scolaro</title><subtitle>Data Science &amp; Software Development</subtitle><entry><title type="html">Taking Free Data</title><link href="http://localhost:4000/articles/python/utilities/2019/03/25/data-for-free.html" rel="alternate" type="text/html" title="Taking Free Data" /><published>2019-03-25T00:00:00-05:00</published><updated>2019-03-25T00:00:00-05:00</updated><id>http://localhost:4000/articles/python/utilities/2019/03/25/data-for-free</id><content type="html" xml:base="http://localhost:4000/articles/python/utilities/2019/03/25/data-for-free.html">&lt;p&gt;IBIS World is a data provider that researches markets and current economic trends. It helps give marketers and entrepreneurs understand future outlook for a specific industry. While IBIS does have commercial solutions for more specific data, they offer a lot of useful information for free.&lt;/p&gt;
+
+&lt;p&gt;The goal of this script is to capture that data in a repeatable, scalable way.It uses web browser automation using Selenium. Selenium loans itself to a ton of flexibility, one of the applications being web scraping. This is especially powerful when web applications use JavaScript functions to generate content. As you can execute those scripts with selenium as well.&lt;/p&gt;
+
+&lt;p&gt;Let’s dive in.&lt;/p&gt;
+
+&lt;p&gt;Our first step is to define and import our modules. This script is pretty basic, so it is only using base pandas (for writing our data into convenient data frames) and selenium which will do most of the navigation and extraction of values.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pandas&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pd&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;selenium&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;We define our web driver location on our local machine. Selenium uses these web drivers to execute the commands. I personally like to use Firefox’s Geckodriver, but drivers for Chrome exist as well.  &lt;INSERT LINKS=&quot;&quot; FOR=&quot;&quot; OTHER=&quot;&quot; DRIVERS=&quot;&quot;&gt; If you do not already have a web driver installed on your computer (or on a selenium remote server), you will need to do so to use Selenium.&lt;/INSERT&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;driverLocation&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;C:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;CODE_PATHS&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;PY&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;geckodriver.exe&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;browser&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;selenium&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;webdriver&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Firefox&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;executable_path&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;driverLocation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;.get is a method in the browser class uses to execute a an HTTP/HTTPS link. This link takes me as far into the websites directory as I can, otherwise I would need additional steps of traversing the site to where I ultimately want to go.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;browser&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'https://www.ibisworld.com/industry-trends/market-research-reports/manufacturing/'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The function .find_elements_by_xpath() method allows the browser to find specific tags, classes and ids in an HTML page. Below, we can see that I am find all ‘a’ tags with HREF links in them. I want to iterate through these later, so I created a list I could append to from the loop. Then, I want to create a data frame, filter them down to the ones relevant to manufacturing and then return the list of strings to be navigated to later.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;elems&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;browser&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;find_elements_by_xpath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;//a[@href]&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;links&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;elem&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;elems&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;links&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;append&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;elem&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get_attribute&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;href&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;links&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DataFrame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;links&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;links&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;columns&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Links'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;    
+
+&lt;span class=&quot;n&quot;&gt;links&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;links&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;links&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Links'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;contains&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'industry-trends/market-research-reports/manufacturing'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)]&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;links&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;links&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Links'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;values&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;All of the data that we need are in consistent tables. To convert into a workable format, it take a little work. As we have done before, we launch the gecko driver for each link that had previously been generated. The function finds the table and creates it as the &lt;data&gt; variable. It splits all the data into a list, and then the index of that list is used to build a Pandas data frame.&lt;/data&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;table_getter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;links_list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;time&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;driverLocation&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;C:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;CODE_PATHS&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;PY&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;geckodriver.exe&quot;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;browser&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;webdriver&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Firefox&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;executable_path&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;driverLocation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;mainData&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DataFrame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;links_list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;browser&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sleep&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;browser&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;find_element_by_class_name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'stat-table'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;dataName&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;browser&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;find_element_by_tag_name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'h1'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;append&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dataName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;singleData&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DataFrame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;26&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;9&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;12&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;13&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
+                              &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;17&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;18&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;19&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;21&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;22&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
+                                 &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;23&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;24&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]]],&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;columns&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'INDUSTRY'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'ANNUAL_REVENUE'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'COUNT_BUSINESSES'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                          &lt;span class=&quot;s&quot;&gt;'REVENUE_GROWTH_SINCE_2013'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'COUNT_BUSINESS_GROWTH_SINCE_2013'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                          &lt;span class=&quot;s&quot;&gt;'REVENUE_FORECAST_TO_2023'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'COUNT_BUSINESS_FORECAST_TO_2023'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'EMPLOYMENT'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                          &lt;span class=&quot;s&quot;&gt;'IMPORTS'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'EXPORTS'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'EMPLOYMENT_GROWTH_SINCE_2013'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'IMPORT_GROWTH_SINCE_2013'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                          &lt;span class=&quot;s&quot;&gt;'EXPORT_GROWTH_SINCE_2013'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'EMPLOYMENT_FORECAST_TO_2023'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'IMPORT_FORECAST_TO_2023'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                          &lt;span class=&quot;s&quot;&gt;'EXPORT_FORECAST_TO_2023'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;mainData&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;concat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mainData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;singleData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;mainData&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reset_index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mainData&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;table_getter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;links&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;final&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reset_index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;inplace&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;style scoped=&quot;&quot;&gt;
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+&lt;/style&gt;
+
+&lt;table border=&quot;1&quot; class=&quot;dataframe&quot;&gt;
+  &lt;thead&gt;
+    &lt;tr style=&quot;text-align: right;&quot;&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;INDUSTRY&lt;/th&gt;
+      &lt;th&gt;ANNUAL_REVENUE&lt;/th&gt;
+      &lt;th&gt;COUNT_BUSINESSES&lt;/th&gt;
+      &lt;th&gt;REVENUE_GROWTH_SINCE_2013&lt;/th&gt;
+
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;th&gt;0&lt;/th&gt;
+      &lt;td&gt;Manufacturing - US Market Research Report&lt;/td&gt;
+      &lt;td&gt;$6,177.2 BN&lt;/td&gt;
+      &lt;td&gt;614,884&lt;/td&gt;
+      &lt;td&gt;-0.5 %&lt;/td&gt;
+
+
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;0&lt;/th&gt;
+      &lt;td&gt;Apparel Manufacturing - US Market Research Report&lt;/td&gt;
+      &lt;td&gt;$6,177.2 BN&lt;/td&gt;
+      &lt;td&gt;614,884&lt;/td&gt;
+      &lt;td&gt;-0.5 %&lt;/td&gt;    
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;0&lt;/th&gt;
+      &lt;td&gt;Beverage and Tobacco Product Manufacturing - U...&lt;/td&gt;
+      &lt;td&gt;$6,177.2 BN&lt;/td&gt;
+      &lt;td&gt;614,884&lt;/td&gt;
+      &lt;td&gt;-0.5 %&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;0&lt;/th&gt;
+      &lt;td&gt;Printing and Related Support Activities - US M...&lt;/td&gt;
+      &lt;td&gt;$6,177.2 BN&lt;/td&gt;
+      &lt;td&gt;614,884&lt;/td&gt;
+      &lt;td&gt;-0.5 %&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;0&lt;/th&gt;
+      &lt;td&gt;Textile Manufacturing - US Market Research Report&lt;/td&gt;
+      &lt;td&gt;$6,177.2 BN&lt;/td&gt;
+      &lt;td&gt;614,884&lt;/td&gt;
+      &lt;td&gt;-0.5 %&lt;/td&gt;
+    &lt;/tr&gt;
+
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;From this point, the data can be store in a SQL database or as a CSV file. It can be as regressors for predictive models or even for general reporting KPIs.&lt;/p&gt;
+
+&lt;p&gt;Web scraping is a very lucrative process. As a data scientist, we often have the tools to perform an analysis, but not necessarily the data. Data like this is just begging to be harvested to create something cool. I hope you can apply this to your own work flow. If you have any questions, please feel free to reach out.&lt;/p&gt;</content><author><name>Tom</name></author><summary type="html">IBIS World is a data provider that researches markets and current economic trends. It helps give marketers and entrepreneurs understand future outlook for a specific industry. While IBIS does have commercial solutions for more specific data, they offer a lot of useful information for free.</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/images/web-scraper-article.jpg" /></entry><entry><title type="html">Automating Economics to Drive Growth</title><link href="http://localhost:4000/articles/python/economics/2019/03/25/automating-elasticity-of-demand.html" rel="alternate" type="text/html" title="Automating Economics to Drive Growth" /><published>2019-03-25T00:00:00-05:00</published><updated>2019-03-25T00:00:00-05:00</updated><id>http://localhost:4000/articles/python/economics/2019/03/25/automating-elasticity-of-demand</id><content type="html" xml:base="http://localhost:4000/articles/python/economics/2019/03/25/automating-elasticity-of-demand.html">&lt;p&gt;This write up is for measuring the elasticity of demand for individual products in a company’s portfolio. Using the results we can optimize pricing to grow revenue. This is especially effective in developed markets where historic data allows for more accuracy results. The math is fairly straightforward, as the function simply using OLS linear regression, and iterate through using a simple python loop.&lt;/p&gt;
+
+&lt;p&gt;Elasticity of demand measures the sensitivity of pricing for a consumer. This measure is invaluable in creating effective pricing strategies. Simply, elasticity of demand is a partial derivative of a demand curve. When you assume a linear demand curve, it is simple as M in y = mx + b. In reality, a demand curve is not linear. It is only assumed to be so when we try to simplify some integral and derivative calculations. To truly calculate elasticity of demand, the partial derivative needs to be calculated and multiple with Delta P/ Delta Q.&lt;/p&gt;
+
+&lt;p&gt;In the supply-demand model, we can easily find a supply curve -  It is the marginal cost curve. The demand model, however, is a little more complicated. The demand curve is defined as the marginal utility curve, but utility is a subjective thing to measure on a case by case basis. If Person A loves cars and Person B doesn’t have much interest in cars, then the utility of buying a new car would differ drastically between the two. In the real world, we can’t perfectly define a demand curve. We can, however, observe historic behavior to estimate demand.&lt;/p&gt;
+
+&lt;p&gt;So this is typically done using a regression analysis. Lucky for us, data science tools make regression analysis incredibly easy. Where it is the lm() function in R, or Scikit-learn or statsmodels implementations of the analysis in Python. I personally enjoy using Python more, so that is what this script is going to coded in.&lt;/p&gt;
+
+&lt;p&gt;First, we import some of the libraries that we will be using. These are incredibly powerful tools that allow us to focus on the assumptions, testing, and take aways. I find that it is perfectly ok to use libraries as long as you understand the underlying math behind the analysis. I would equate libraries to a hammer. You aren’t going to go and build one from scratch just to drive a nail into a house. You would just go out and buy one instead. This helps us focus on the task at hand, rather than getting caught up in re-inventing the wheel.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;#Import Modules
+&lt;/span&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pandas&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pd&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pyodbc&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;numpy&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;statsmodels.api&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sm&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Our EOD() function filters based on individual product keys and reshapes Pandas series into NumPy columns arrays. WE transform the values into log values. In the end this will change the way we interpret the results from a regular regression. When using a log-log regression the result would be “A X% change in the price would elicit a Beta*X% change in quantity purchased”. The model is then fitted and only the parameter we find most important are written into a data frame.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;EOD&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;FILTER&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DF&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;MEASURE_ON&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'PROD_KEY'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;DF&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DF&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;loc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DF&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MEASURE_ON&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;FILTER&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'UNIT_PRICE'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'QUANTITY'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;#col format ,'UNIT_PRICE_2']
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DF&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'UNIT_PRICE'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;values&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reshape&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DF&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'QUANTITY'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;values&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reshape&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# log-log conversion
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sm&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add_constant&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;model&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sm&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OLS&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;params&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;B&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rsquared&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;C&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pvalues&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;D&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;conf_int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;alpha&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cols&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;None&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;#50% confidence interval
+&lt;/span&gt;        &lt;span class=&quot;n&quot;&gt;E&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;conf_int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;alpha&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cols&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;None&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;#50% confidence interval
+&lt;/span&gt;        &lt;span class=&quot;n&quot;&gt;F&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shape&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;model&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;None&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;except&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;B&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;C&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;D&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;E&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;F&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'insufficient'&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;B&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;C&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;D&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;E&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;F&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;#Read your data here
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DF&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;read_csv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;#Data sanity check
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DF&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div&gt;
+&lt;style scoped=&quot;&quot;&gt;
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+&lt;/style&gt;
+&lt;table border=&quot;1&quot; class=&quot;dataframe&quot;&gt;
+  &lt;thead&gt;
+    &lt;tr style=&quot;text-align: right;&quot;&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;PROD_KEY&lt;/th&gt;
+      &lt;th&gt;UNIT_PRICE&lt;/th&gt;
+      &lt;th&gt;QUANTITY&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;th&gt;0&lt;/th&gt;
+      &lt;td&gt;716&lt;/td&gt;
+      &lt;td&gt;0.01&lt;/td&gt;
+      &lt;td&gt;25000.0&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;1&lt;/th&gt;
+      &lt;td&gt;515&lt;/td&gt;
+      &lt;td&gt;0.01&lt;/td&gt;
+      &lt;td&gt;8215350.0&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;2&lt;/th&gt;
+      &lt;td&gt;732&lt;/td&gt;
+      &lt;td&gt;0.01&lt;/td&gt;
+      &lt;td&gt;1.0&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;3&lt;/th&gt;
+      &lt;td&gt;316&lt;/td&gt;
+      &lt;td&gt;0.01&lt;/td&gt;
+      &lt;td&gt;4.0&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;4&lt;/th&gt;
+      &lt;td&gt;148&lt;/td&gt;
+      &lt;td&gt;0.01&lt;/td&gt;
+      &lt;td&gt;6.0&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Here we are creating a list of product keys that we want to iterate through to find elasticities for.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;PRODS&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DF&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'PROD_KEY'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;values&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;PRODS&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;unique&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PRODS&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This is essentially what the EOD() function is doing, but is only selecting certain parameters from the model.summary().  The add_constant() method adds an column of ones to an array. By default sm.OLS doesn’t include an intercept, so needs to be added to preform a legitimate OLS regression. An OLS regression stands for Ordinary Least Squares. In a sentence, It minimizes the sum of squared error for a given model against the observed values.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sm&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add_constant&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;model&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sm&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OLS&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;summary&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;table class=&quot;simpletable&quot;&gt;
+&lt;caption&gt;OLS Regression Results&lt;/caption&gt;
+&lt;tr&gt;
+  &lt;th&gt;Dep. Variable:&lt;/th&gt;            &lt;td&gt;y&lt;/td&gt;        &lt;th&gt;  R-squared:         &lt;/th&gt;  &lt;td&gt;   0.364&lt;/td&gt;  
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;th&gt;Model:&lt;/th&gt;                   &lt;td&gt;OLS&lt;/td&gt;       &lt;th&gt;  Adj. R-squared:    &lt;/th&gt;  &lt;td&gt;   0.364&lt;/td&gt;  
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;th&gt;Method:&lt;/th&gt;             &lt;td&gt;Least Squares&lt;/td&gt;  &lt;th&gt;  F-statistic:       &lt;/th&gt;  &lt;td&gt;1.207e+05&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;th&gt;Date:&lt;/th&gt;             &lt;td&gt;Thu, 21 Mar 2019&lt;/td&gt; &lt;th&gt;  Prob (F-statistic):&lt;/th&gt;   &lt;td&gt;  0.00&lt;/td&gt;   
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;th&gt;Time:&lt;/th&gt;                 &lt;td&gt;09:48:34&lt;/td&gt;     &lt;th&gt;  Log-Likelihood:    &lt;/th&gt; &lt;td&gt;-4.4329e+05&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;th&gt;No. Observations:&lt;/th&gt;      &lt;td&gt;210705&lt;/td&gt;      &lt;th&gt;  AIC:               &lt;/th&gt;  &lt;td&gt;8.866e+05&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;th&gt;Df Residuals:&lt;/th&gt;          &lt;td&gt;210703&lt;/td&gt;      &lt;th&gt;  BIC:               &lt;/th&gt;  &lt;td&gt;8.866e+05&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;th&gt;Df Model:&lt;/th&gt;              &lt;td&gt;     1&lt;/td&gt;      &lt;th&gt;                     &lt;/th&gt;      &lt;td&gt; &lt;/td&gt;     
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;th&gt;Covariance Type:&lt;/th&gt;      &lt;td&gt;nonrobust&lt;/td&gt;    &lt;th&gt;                     &lt;/th&gt;      &lt;td&gt; &lt;/td&gt;     
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;table class=&quot;simpletable&quot;&gt;
+&lt;tr&gt;
+    &lt;td&gt;&lt;/td&gt;       &lt;th&gt;coef&lt;/th&gt;     &lt;th&gt;std err&lt;/th&gt;      &lt;th&gt;t&lt;/th&gt;      &lt;th&gt;P&amp;gt;|t|&lt;/th&gt;  &lt;th&gt;[0.025&lt;/th&gt;    &lt;th&gt;0.975]&lt;/th&gt;  
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;th&gt;const&lt;/th&gt; &lt;td&gt;    5.2531&lt;/td&gt; &lt;td&gt;    0.007&lt;/td&gt; &lt;td&gt;  770.181&lt;/td&gt; &lt;td&gt; 0.000&lt;/td&gt; &lt;td&gt;    5.240&lt;/td&gt; &lt;td&gt;    5.266&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;th&gt;x1&lt;/th&gt;    &lt;td&gt;   -0.8229&lt;/td&gt; &lt;td&gt;    0.002&lt;/td&gt; &lt;td&gt; -347.431&lt;/td&gt; &lt;td&gt; 0.000&lt;/td&gt; &lt;td&gt;   -0.828&lt;/td&gt; &lt;td&gt;   -0.818&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;table class=&quot;simpletable&quot;&gt;
+&lt;tr&gt;
+  &lt;th&gt;Omnibus:&lt;/th&gt;       &lt;td&gt;6021.991&lt;/td&gt; &lt;th&gt;  Durbin-Watson:     &lt;/th&gt; &lt;td&gt;   1.893&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;th&gt;Prob(Omnibus):&lt;/th&gt;  &lt;td&gt; 0.000&lt;/td&gt;  &lt;th&gt;  Jarque-Bera (JB):  &lt;/th&gt; &lt;td&gt;7332.914&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;th&gt;Skew:&lt;/th&gt;           &lt;td&gt; 0.361&lt;/td&gt;  &lt;th&gt;  Prob(JB):          &lt;/th&gt; &lt;td&gt;    0.00&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;th&gt;Kurtosis:&lt;/th&gt;       &lt;td&gt; 3.559&lt;/td&gt;  &lt;th&gt;  Cond. No.          &lt;/th&gt; &lt;td&gt;    4.89&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;p&gt;Here we are iterating through each of the product keys and storing them in a Pandas DataFrame for easy manipulation, export, or analysis. The beta of the each product should be negative, and only in rare cases is the beta zero. In ever rarer cases it can be positive. In which case, your data either lacks enough observations for that product, a weird deal structure created an anomaly or that product is a Giffen or Veblen good. The most latter case is incredibly rare, so I would be relatively confident in writing that possibility off for one of the former cases.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DataFrame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;columns&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'PROD_KEY'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'BETA'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'PVAL'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'P25'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'P75'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'R2'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'Records'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PRODS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shape&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]):&lt;/span&gt;   
+    &lt;span class=&quot;n&quot;&gt;Beta&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Rsquare&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Pval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;P25&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;P75&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Records&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EOD&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PRODS&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DF&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;loc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PRODS&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Beta&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Pval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;P25&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;P75&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Rsquare&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Records&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div&gt;
+&lt;style scoped=&quot;&quot;&gt;
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+&lt;/style&gt;
+&lt;table border=&quot;1&quot; class=&quot;dataframe&quot;&gt;
+  &lt;thead&gt;
+    &lt;tr style=&quot;text-align: right;&quot;&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;PROD_KEY&lt;/th&gt;
+      &lt;th&gt;BETA&lt;/th&gt;
+      &lt;th&gt;PVAL&lt;/th&gt;
+      &lt;th&gt;P25&lt;/th&gt;
+      &lt;th&gt;P75&lt;/th&gt;
+      &lt;th&gt;R2&lt;/th&gt;
+      &lt;th&gt;Records&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;th&gt;0&lt;/th&gt;
+      &lt;td&gt;144&lt;/td&gt;
+      &lt;td&gt;-0.917165&lt;/td&gt;
+      &lt;td&gt;0.086176&lt;/td&gt;
+      &lt;td&gt;-1.272416&lt;/td&gt;
+      &lt;td&gt;-0.561914&lt;/td&gt;
+      &lt;td&gt;0.066926&lt;/td&gt;
+      &lt;td&gt;45&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;1&lt;/th&gt;
+      &lt;td&gt;147&lt;/td&gt;
+      &lt;td&gt;-0.571182&lt;/td&gt;
+      &lt;td&gt;0.336479&lt;/td&gt;
+      &lt;td&gt;-0.970016&lt;/td&gt;
+      &lt;td&gt;-0.172348&lt;/td&gt;
+      &lt;td&gt;0.038537&lt;/td&gt;
+      &lt;td&gt;26&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;2&lt;/th&gt;
+      &lt;td&gt;150&lt;/td&gt;
+      &lt;td&gt;0.000000&lt;/td&gt;
+      &lt;td&gt;0.000000&lt;/td&gt;
+      &lt;td&gt;0.000000&lt;/td&gt;
+      &lt;td&gt;0.000000&lt;/td&gt;
+      &lt;td&gt;0.000000&lt;/td&gt;
+      &lt;td&gt;insufficient&lt;/td&gt;
+    &lt;/tr&gt;
+
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The end result is a list of products and their respective elasticities of demand. From this, we can create optimal pricing strategy. A elasticity less than -1 should get a price decrease, but elasticities greater than -1 should get a price bump. Businesses in developed markets can improve revenue by optimizing to the market they serve.&lt;/p&gt;</content><author><name>Tom</name></author><summary type="html">This write up is for measuring the elasticity of demand for individual products in a company’s portfolio. Using the results we can optimize pricing to grow revenue. This is especially effective in developed markets where historic data allows for more accuracy results. The math is fairly straightforward, as the function simply using OLS linear regression, and iterate through using a simple python loop.</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/images/elasticity-article.jpg" /></entry></feed>

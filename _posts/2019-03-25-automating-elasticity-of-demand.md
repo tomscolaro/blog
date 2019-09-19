@@ -5,7 +5,7 @@ author: Tom
 categories: [ Articles, Python, Economics]
 image: assets/images/elasticity-article.jpg
 featured: true
-project: false
+
 ---
 
 

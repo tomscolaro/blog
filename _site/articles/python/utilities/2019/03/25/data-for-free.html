@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="icon" href="/assets/images/favicon.png">
+<title>Taking Free Data | Tom Scolaro</title>
+<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Taking Free Data | Tom Scolaro</title>
+<meta name="generator" content="Jekyll v3.8.6" />
+<meta property="og:title" content="Taking Free Data" />
+<meta name="author" content="Tom" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="IBIS World is a data provider that researches markets and current economic trends. It helps give marketers and entrepreneurs understand future outlook for a specific industry. While IBIS does have commercial solutions for more specific data, they offer a lot of useful information for free." />
+<meta property="og:description" content="IBIS World is a data provider that researches markets and current economic trends. It helps give marketers and entrepreneurs understand future outlook for a specific industry. While IBIS does have commercial solutions for more specific data, they offer a lot of useful information for free." />
+<link rel="canonical" href="http://localhost:4000/articles/python/utilities/2019/03/25/data-for-free.html" />
+<meta property="og:url" content="http://localhost:4000/articles/python/utilities/2019/03/25/data-for-free.html" />
+<meta property="og:site_name" content="Tom Scolaro" />
+<meta property="og:image" content="http://localhost:4000/assets/images/web-scraper-article.jpg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-03-25T00:00:00-05:00" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/articles/python/utilities/2019/03/25/data-for-free.html"},"url":"http://localhost:4000/articles/python/utilities/2019/03/25/data-for-free.html","dateModified":"2019-03-25T00:00:00-05:00","datePublished":"2019-03-25T00:00:00-05:00","headline":"Taking Free Data","author":{"@type":"Person","name":"Tom"},"image":"http://localhost:4000/assets/images/web-scraper-article.jpg","description":"IBIS World is a data provider that researches markets and current economic trends. It helps give marketers and entrepreneurs understand future outlook for a specific industry. While IBIS does have commercial solutions for more specific data, they offer a lot of useful information for free.","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Rubik:400,400i,500,500i,700,700i" rel="stylesheet">
+<link href="/assets/css/theme.css" rel="stylesheet">
+<link href="/assets/css/custom.css" rel="stylesheet">
+
+
+
+</head>
+
+
+<body class="layout-post">
+
+<!-- Begin Menu Navigation
+================================================== -->
+<header class="navbar navbar-toggleable-md navbar-light bg-white fixed-top mediumnavigation">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarsWow" aria-controls="navbarsWow" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="container">
+
+        <!-- Begin Logo -->
+
+
+        <a class="navbar-brand" href="/">
+
+          <div class="logo-container">
+          <!--    <a href='/' ><i class="fa-rocket fa-5x"></i></a>  -->
+              <span class="logo-motto-group">
+                <span class="logo" onclick="window.location='/'">
+  						          <strong>Tom</strong>
+  						          <span>Scolaro</span>
+  					    </span>
+  				    	<span class="motto">
+  						            Data Scientist - Developer
+  					    </span>
+                </span>
+  				</div>
+      <!--  <img src="/" alt="">  -->
+        </a>
+        <!-- End Logo -->
+
+        <!-- Begin Menu -->
+        <div class="collapse navbar-collapse" id="navbarsWow">
+            <!-- Begin Menu -->
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/index.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/articles.html">Articles</a>
+                </li>
+               
+                <li class="nav-item">
+                    <a class="nav-link" href="/about.html">About</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/contact.html">Contact</a>
+                </li>
+            </ul>
+            <!-- End Menu -->
+
+        </div>
+    </div>
+</header>
+
+
+
+<!-- End Menu Navigation
+================================================== -->
+
+<div class="site-content">
+
+    <div class="container">
+
+    <!-- Site Title
+    ================================================== -->
+
+    <div class="mainheading" style="display:none;">
+        <h1 class="sitetitle"></h1>
+        <p class="lead">
+             Data Science & Software Development
+        </p>
+    </div>
+
+
+    <!-- Content
+    ================================================== -->
+    <div class="main-content">
+        <!-- Begin Article
+================================================== -->
+<script type='text/javascript' src='//platform-api.sharethis.com/js/sharethis.js#property=5c85382bd11c6a0011c487b3&product=sticky-share-buttons' async='async'></script>
+	<div class="row">
+
+		<!-- Post -->
+        
+		<div class="col-lrg-10">
+			<div class="mainheading">
+
+                <!-- Post Categories -->
+                <div class="after-post-tags">
+                    <ul class="tags">
+                        
+                        
+                        <li>
+                         <a href="/category/articles/">Articles</a>
+                        </li>
+                        
+                        <li>
+                         <a href="/category/python/">Python</a>
+                        </li>
+                        
+                        <li>
+                         <a href="/category/utilities/">utilities</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+                <!-- End Categories -->
+
+                <!-- Post Title -->
+				<h1 class="posttitle">Taking Free Data</h1>
+
+			</div>
+
+			<!-- Post Featured Image -->
+			<div class= 'center'>
+			<img class="featured-image img-fluid" src="/assets/images/web-scraper-article.jpg" alt="Taking Free Data">
+			</div>
+			<!-- End Featured Image -->
+
+<div class="sharethis-inline-share-buttons"></div>
+
+			<!-- Post Content -->
+			<div class="article-post">
+				<p>IBIS World is a data provider that researches markets and current economic trends. It helps give marketers and entrepreneurs understand future outlook for a specific industry. While IBIS does have commercial solutions for more specific data, they offer a lot of useful information for free.</p>
+
+<p>The goal of this script is to capture that data in a repeatable, scalable way.It uses web browser automation using Selenium. Selenium loans itself to a ton of flexibility, one of the applications being web scraping. This is especially powerful when web applications use JavaScript functions to generate content. As you can execute those scripts with selenium as well.</p>
+
+<p>Let’s dive in.</p>
+
+<p>Our first step is to define and import our modules. This script is pretty basic, so it is only using base pandas (for writing our data into convenient data frames) and selenium which will do most of the navigation and extraction of values.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="kn">import</span> <span class="nn">selenium</span>
+
+</code></pre></div></div>
+
+<p>We define our web driver location on our local machine. Selenium uses these web drivers to execute the commands. I personally like to use Firefox’s Geckodriver, but drivers for Chrome exist as well.  <INSERT LINKS="" FOR="" OTHER="" DRIVERS=""> If you do not already have a web driver installed on your computer (or on a selenium remote server), you will need to do so to use Selenium.</INSERT></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">driverLocation</span> <span class="o">=</span> <span class="s">"C:</span><span class="err">\</span><span class="s">CODE_PATHS</span><span class="err">\</span><span class="s">PY</span><span class="err">\</span><span class="s">geckodriver.exe"</span>
+<span class="n">browser</span> <span class="o">=</span> <span class="n">selenium</span><span class="o">.</span><span class="n">webdriver</span><span class="o">.</span><span class="n">Firefox</span><span class="p">(</span><span class="n">executable_path</span><span class="o">=</span><span class="n">driverLocation</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>.get is a method in the browser class uses to execute a an HTTP/HTTPS link. This link takes me as far into the websites directory as I can, otherwise I would need additional steps of traversing the site to where I ultimately want to go.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">browser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'https://www.ibisworld.com/industry-trends/market-research-reports/manufacturing/'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The function .find_elements_by_xpath() method allows the browser to find specific tags, classes and ids in an HTML page. Below, we can see that I am find all ‘a’ tags with HREF links in them. I want to iterate through these later, so I created a list I could append to from the loop. Then, I want to create a data frame, filter them down to the ones relevant to manufacturing and then return the list of strings to be navigated to later.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">elems</span> <span class="o">=</span> <span class="n">browser</span><span class="o">.</span><span class="n">find_elements_by_xpath</span><span class="p">(</span><span class="s">"//a[@href]"</span><span class="p">)</span>
+<span class="n">links</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">elems</span><span class="p">:</span>
+    <span class="n">links</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elem</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s">"href"</span><span class="p">))</span>
+
+<span class="n">links</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">links</span><span class="p">)</span>
+<span class="n">links</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s">'Links'</span><span class="p">]</span>    
+
+<span class="n">links</span><span class="o">=</span><span class="n">links</span><span class="p">[</span><span class="n">links</span><span class="p">[</span><span class="s">'Links'</span><span class="p">]</span><span class="o">.</span><span class="nb">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s">'industry-trends/market-research-reports/manufacturing'</span><span class="p">)]</span>
+<span class="n">links</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">links</span><span class="p">[</span><span class="s">'Links'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<p>All of the data that we need are in consistent tables. To convert into a workable format, it take a little work. As we have done before, we launch the gecko driver for each link that had previously been generated. The function finds the table and creates it as the <data> variable. It splits all the data into a list, and then the index of that list is used to build a Pandas data frame.</data></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">table_getter</span><span class="p">(</span><span class="n">links_list</span><span class="p">):</span>
+    <span class="kn">import</span> <span class="nn">time</span>
+    <span class="n">driverLocation</span> <span class="o">=</span> <span class="s">"C:</span><span class="err">\</span><span class="s">CODE_PATHS</span><span class="err">\</span><span class="s">PY</span><span class="err">\</span><span class="s">geckodriver.exe"</span>
+    <span class="n">browser</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">Firefox</span><span class="p">(</span><span class="n">executable_path</span><span class="o">=</span><span class="n">driverLocation</span><span class="p">)</span>
+
+    <span class="n">mainData</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">links_list</span><span class="p">:</span>
+        <span class="n">browser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">browser</span><span class="o">.</span><span class="n">find_element_by_class_name</span><span class="p">(</span><span class="s">'stat-table'</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+        <span class="n">dataName</span> <span class="o">=</span> <span class="n">browser</span><span class="o">.</span><span class="n">find_element_by_tag_name</span><span class="p">(</span><span class="s">'h1'</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dataName</span><span class="p">)</span>
+        <span class="n">singleData</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([[</span><span class="n">data</span><span class="p">[</span><span class="mi">26</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="mi">8</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="mi">9</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="mi">12</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="mi">13</span><span class="p">],</span>
+                              <span class="n">data</span><span class="p">[</span><span class="mi">17</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="mi">18</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="mi">19</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="mi">20</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="mi">21</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="mi">22</span><span class="p">],</span>
+                                 <span class="n">data</span><span class="p">[</span><span class="mi">23</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="mi">24</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="mi">25</span><span class="p">]]],</span>
+                <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s">'INDUSTRY'</span><span class="p">,</span> <span class="s">'ANNUAL_REVENUE'</span><span class="p">,</span> <span class="s">'COUNT_BUSINESSES'</span><span class="p">,</span>
+                          <span class="s">'REVENUE_GROWTH_SINCE_2013'</span><span class="p">,</span><span class="s">'COUNT_BUSINESS_GROWTH_SINCE_2013'</span><span class="p">,</span>
+                          <span class="s">'REVENUE_FORECAST_TO_2023'</span><span class="p">,</span> <span class="s">'COUNT_BUSINESS_FORECAST_TO_2023'</span><span class="p">,</span> <span class="s">'EMPLOYMENT'</span><span class="p">,</span>
+                          <span class="s">'IMPORTS'</span><span class="p">,</span> <span class="s">'EXPORTS'</span><span class="p">,</span> <span class="s">'EMPLOYMENT_GROWTH_SINCE_2013'</span><span class="p">,</span> <span class="s">'IMPORT_GROWTH_SINCE_2013'</span><span class="p">,</span>
+                          <span class="s">'EXPORT_GROWTH_SINCE_2013'</span><span class="p">,</span> <span class="s">'EMPLOYMENT_FORECAST_TO_2023'</span><span class="p">,</span> <span class="s">'IMPORT_FORECAST_TO_2023'</span><span class="p">,</span>
+                          <span class="s">'EXPORT_FORECAST_TO_2023'</span><span class="p">])</span>
+        <span class="n">mainData</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">mainData</span><span class="p">,</span> <span class="n">singleData</span><span class="p">])</span>
+        <span class="n">data</span> <span class="o">=</span><span class="p">[]</span>
+    <span class="n">mainData</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">mainData</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">final</span> <span class="o">=</span> <span class="n">table_getter</span><span class="p">(</span><span class="n">links</span><span class="p">)</span>
+<span class="n">final</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">inplace</span> <span class="o">=</span> <span class="bp">True</span> <span class="p">)</span>
+</code></pre></div></div>
+
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>INDUSTRY</th>
+      <th>ANNUAL_REVENUE</th>
+      <th>COUNT_BUSINESSES</th>
+      <th>REVENUE_GROWTH_SINCE_2013</th>
+
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Manufacturing - US Market Research Report</td>
+      <td>$6,177.2 BN</td>
+      <td>614,884</td>
+      <td>-0.5 %</td>
+
+
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>Apparel Manufacturing - US Market Research Report</td>
+      <td>$6,177.2 BN</td>
+      <td>614,884</td>
+      <td>-0.5 %</td>    
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>Beverage and Tobacco Product Manufacturing - U...</td>
+      <td>$6,177.2 BN</td>
+      <td>614,884</td>
+      <td>-0.5 %</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>Printing and Related Support Activities - US M...</td>
+      <td>$6,177.2 BN</td>
+      <td>614,884</td>
+      <td>-0.5 %</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>Textile Manufacturing - US Market Research Report</td>
+      <td>$6,177.2 BN</td>
+      <td>614,884</td>
+      <td>-0.5 %</td>
+    </tr>
+
+  </tbody>
+</table>
+
+<p>From this point, the data can be store in a SQL database or as a CSV file. It can be as regressors for predictive models or even for general reporting KPIs.</p>
+
+<p>Web scraping is a very lucrative process. As a data scientist, we often have the tools to perform an analysis, but not necessarily the data. Data like this is just begging to be harvested to create something cool. I hope you can apply this to your own work flow. If you have any questions, please feel free to reach out.</p>
+
+                <div class="clearfix"></div>
+			</div>
+
+            <!-- Post Date -->
+            <p>
+            <small>
+                <span class="post-date"><time class="post-date" datetime="2019-03-25">25 Mar 2019</time></span>
+                
+                </small>
+            </p>
+
+
+
+            <!-- Prev/Next -->
+            <div class="row PageNavigation mt-4 prevnextlinks">
+              
+                <div class="col-md-6 rightborder pl-0">
+                    <a class="thepostlink" href="http://localhost:4000/articles/python/economics/2019/03/25/automating-elasticity-of-demand.html">&laquo; Automating Economics to Drive Growth</a>
+                </div>
+              
+              
+            </div>
+            <!-- End Prev/Next -->
+
+<!--
+             <!-- Author Box
+                
+				<div class="row post-top-meta">
+					<div class="col-md-2">
+						<img class="author-thumb" src="https://www.gravatar.com/avatar/?s=250&d=mm&r=x" alt="Tom">
+					</div>
+					<div class="col-md-10">
+						<a target="_blank" class="link-dark" href="https://tomscolaro.com">Tom</a><a target="_blank" href="https://github.com/tomscolaro" class="btn follow">Follow</a>
+						<span class="author-description">Author this blog. Data Scientist and Developer</span>
+					</div>
+				</div>
+                 -->
+
+
+            <!-- Begin Comments
+            ================================================== -->
+            <section>
+            <div id="comments">
+                <section class="disqus">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_shortname = 'tomscolaro-com';
+        var disqus_developer = 0;
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = window.location.protocol + '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+            </div>
+            </section>
+            <!--End Comments
+            ================================================== -->
+
+		</div>
+		<!-- End Post -->
+
+	</div>
+<!-- End Article
+================================================== -->
+
+    </div>
+
+    </div><!-- /.container -->
+
+
+    <!-- Begin Footer
+    ================================================== -->
+    <footer class="footer">
+        <div class="container">
+
+  <div class="row">
+
+    <div class="col-sm-6 text-left footersocial">
+      <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+              <a class="nav-link" href="/index.html">Home</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="/articles.html">Articles</a>
+          </li>
+         
+          <li class="nav-item">
+              <a class="nav-link" href="/about.html">About</a>
+          </li>
+
+          <li class="nav-item">
+              <a class="nav-link" href="/contact.html">Contact</a>
+          </li>
+      </ul>
+        </div>
+
+
+        <div class="col-md-6 text-right footersocial">
+          <h5>Follow Me</h5>
+          <a  class="nav-link" href="https:/github.com/tomscolaro"> <i class="fa fa-github"></i> </a>
+              <a  class="nav-link" href="https:/linkedin.com/in/thomasscolaro">  <i class="fa fa-linkedin"></i> </a>
+              <a  class="nav-link" href="https:/twitter.com/tom_scolaro">  <i class="fa fa-twitter"></i> </a>
+            </div>
+
+
+
+
+
+          </div>
+        </div>
+
+    </footer>
+
+
+</div>
+
+<!-- JavaScript
+================================================== -->
+
+<script src="/assets/js/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+
+<script src="/assets/js/ie10-viewport-bug-workaround.js"></script>
+
+<script type='text/javascript' src='/assets/js/masonry.pkgd.min.js'></script>
+
+<script src="/assets/js/theme.js"></script>
+
+</body>
+
+</html>
