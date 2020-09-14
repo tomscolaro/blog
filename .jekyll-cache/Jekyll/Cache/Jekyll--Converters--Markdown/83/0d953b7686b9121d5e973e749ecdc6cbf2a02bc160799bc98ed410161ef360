@@ -1,0 +1,2 @@
+I"ž<p>This write up is for measuring the elasticity of demand for individual products in a companyâ€™s portfolio. Using the results we can optimize pricing to grow revenue. This is especially effective in developed markets where historic data allows for more accuracy results. The math is fairly straightforward, as the function simply using OLS linear regression, and iterate through using a simple python loop.</p>
+:ET
