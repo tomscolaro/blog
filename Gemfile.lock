@@ -75,13 +75,14 @@ PLATFORMS
   x64-mingw32
 
 DEPENDENCIES
-  jekyll (~> 3.8.5)
+  jekyll (~> 3.8.7)
   jekyll-archives
-  jekyll-feed (~> 0.6)
+  jekyll-feed
   jekyll-paginate
   jekyll-seo-tag
   jekyll-sitemap
-  minima (~> 2.0)
+  kramdown
+  minima
   tzinfo-data
 
 BUNDLED WITH
