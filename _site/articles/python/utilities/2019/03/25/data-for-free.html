@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link rel="icon" href="/assets/images/favicon.png">
-<title>Taking Free Data | Tom Scolaro</title>
-<!-- Begin Jekyll SEO tag v2.5.0 -->
-<title>Taking Free Data | Tom Scolaro</title>
-<meta name="generator" content="Jekyll v3.8.6" />
-<meta property="og:title" content="Taking Free Data" />
+<title>Web Scraping 4 Dummies | Tom Scolaro</title>
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Web Scraping 4 Dummies | Tom Scolaro</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Web Scraping 4 Dummies" />
 <meta name="author" content="Tom" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="IBIS World is a data provider that researches markets and current economic trends. It helps give marketers and entrepreneurs understand future outlook for a specific industry. While IBIS does have commercial solutions for more specific data, they offer a lot of useful information for free." />
@@ -20,7 +20,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2019-03-25T00:00:00-05:00" />
 <script type="application/ld+json">
-{"@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/articles/python/utilities/2019/03/25/data-for-free.html"},"url":"http://localhost:4000/articles/python/utilities/2019/03/25/data-for-free.html","dateModified":"2019-03-25T00:00:00-05:00","datePublished":"2019-03-25T00:00:00-05:00","headline":"Taking Free Data","author":{"@type":"Person","name":"Tom"},"image":"http://localhost:4000/assets/images/web-scraper-article.jpg","description":"IBIS World is a data provider that researches markets and current economic trends. It helps give marketers and entrepreneurs understand future outlook for a specific industry. While IBIS does have commercial solutions for more specific data, they offer a lot of useful information for free.","@context":"http://schema.org"}</script>
+{"url":"http://localhost:4000/articles/python/utilities/2019/03/25/data-for-free.html","author":{"@type":"Person","name":"Tom"},"headline":"Web Scraping 4 Dummies","datePublished":"2019-03-25T00:00:00-05:00","dateModified":"2019-03-25T00:00:00-05:00","description":"IBIS World is a data provider that researches markets and current economic trends. It helps give marketers and entrepreneurs understand future outlook for a specific industry. While IBIS does have commercial solutions for more specific data, they offer a lot of useful information for free.","image":"http://localhost:4000/assets/images/web-scraper-article.jpg","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/articles/python/utilities/2019/03/25/data-for-free.html"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
@@ -70,10 +70,7 @@
             <!-- Begin Menu -->
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/index.html">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/articles.html">Articles</a>
+                    <a class="nav-link" href="/">Articles</a>
                 </li>
                
                 <li class="nav-item">
@@ -145,13 +142,13 @@
                 <!-- End Categories -->
 
                 <!-- Post Title -->
-				<h1 class="posttitle">Taking Free Data</h1>
+				<h1 class="posttitle">Web Scraping 4 Dummies</h1>
 
 			</div>
 
 			<!-- Post Featured Image -->
 			<div class= 'center'>
-			<img class="featured-image img-fluid" src="/assets/images/web-scraper-article.jpg" alt="Taking Free Data">
+			<img class="featured-image img-fluid" src="/assets/images/web-scraper-article.jpg" alt="Web Scraping 4 Dummies">
 			</div>
 			<!-- End Featured Image -->
 
@@ -174,27 +171,27 @@
 
 <p>We define our web driver location on our local machine. Selenium uses these web drivers to execute the commands. I personally like to use Firefox’s Geckodriver, but drivers for Chrome exist as well.  <INSERT LINKS="" FOR="" OTHER="" DRIVERS=""> If you do not already have a web driver installed on your computer (or on a selenium remote server), you will need to do so to use Selenium.</INSERT></p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">driverLocation</span> <span class="o">=</span> <span class="s">"C:</span><span class="err">\</span><span class="s">CODE_PATHS</span><span class="err">\</span><span class="s">PY</span><span class="err">\</span><span class="s">geckodriver.exe"</span>
-<span class="n">browser</span> <span class="o">=</span> <span class="n">selenium</span><span class="o">.</span><span class="n">webdriver</span><span class="o">.</span><span class="n">Firefox</span><span class="p">(</span><span class="n">executable_path</span><span class="o">=</span><span class="n">driverLocation</span><span class="p">)</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">driverLocation</span> <span class="o">=</span> <span class="s">"C:\CODE_PATHS\PY\geckodriver.exe"</span>
+<span class="n">browser</span> <span class="o">=</span> <span class="n">selenium</span><span class="p">.</span><span class="n">webdriver</span><span class="p">.</span><span class="n">Firefox</span><span class="p">(</span><span class="n">executable_path</span><span class="o">=</span><span class="n">driverLocation</span><span class="p">)</span>
 </code></pre></div></div>
 
 <p>.get is a method in the browser class uses to execute a an HTTP/HTTPS link. This link takes me as far into the websites directory as I can, otherwise I would need additional steps of traversing the site to where I ultimately want to go.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">browser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'https://www.ibisworld.com/industry-trends/market-research-reports/manufacturing/'</span><span class="p">)</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">browser</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'https://www.ibisworld.com/industry-trends/market-research-reports/manufacturing/'</span><span class="p">)</span>
 </code></pre></div></div>
 
 <p>The function .find_elements_by_xpath() method allows the browser to find specific tags, classes and ids in an HTML page. Below, we can see that I am find all ‘a’ tags with HREF links in them. I want to iterate through these later, so I created a list I could append to from the loop. Then, I want to create a data frame, filter them down to the ones relevant to manufacturing and then return the list of strings to be navigated to later.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">elems</span> <span class="o">=</span> <span class="n">browser</span><span class="o">.</span><span class="n">find_elements_by_xpath</span><span class="p">(</span><span class="s">"//a[@href]"</span><span class="p">)</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">elems</span> <span class="o">=</span> <span class="n">browser</span><span class="p">.</span><span class="n">find_elements_by_xpath</span><span class="p">(</span><span class="s">"//a[@href]"</span><span class="p">)</span>
 <span class="n">links</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">elems</span><span class="p">:</span>
-    <span class="n">links</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elem</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s">"href"</span><span class="p">))</span>
+    <span class="n">links</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">elem</span><span class="p">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s">"href"</span><span class="p">))</span>
 
-<span class="n">links</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">links</span><span class="p">)</span>
-<span class="n">links</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s">'Links'</span><span class="p">]</span>    
+<span class="n">links</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">links</span><span class="p">)</span>
+<span class="n">links</span><span class="p">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s">'Links'</span><span class="p">]</span>    
 
-<span class="n">links</span><span class="o">=</span><span class="n">links</span><span class="p">[</span><span class="n">links</span><span class="p">[</span><span class="s">'Links'</span><span class="p">]</span><span class="o">.</span><span class="nb">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s">'industry-trends/market-research-reports/manufacturing'</span><span class="p">)]</span>
-<span class="n">links</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">links</span><span class="p">[</span><span class="s">'Links'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">links</span><span class="o">=</span><span class="n">links</span><span class="p">[</span><span class="n">links</span><span class="p">[</span><span class="s">'Links'</span><span class="p">].</span><span class="nb">str</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span><span class="s">'industry-trends/market-research-reports/manufacturing'</span><span class="p">)]</span>
+<span class="n">links</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">links</span><span class="p">[</span><span class="s">'Links'</span><span class="p">].</span><span class="n">values</span><span class="p">)</span>
 
 </code></pre></div></div>
 
@@ -202,19 +199,19 @@
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">table_getter</span><span class="p">(</span><span class="n">links_list</span><span class="p">):</span>
     <span class="kn">import</span> <span class="nn">time</span>
-    <span class="n">driverLocation</span> <span class="o">=</span> <span class="s">"C:</span><span class="err">\</span><span class="s">CODE_PATHS</span><span class="err">\</span><span class="s">PY</span><span class="err">\</span><span class="s">geckodriver.exe"</span>
-    <span class="n">browser</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">Firefox</span><span class="p">(</span><span class="n">executable_path</span><span class="o">=</span><span class="n">driverLocation</span><span class="p">)</span>
+    <span class="n">driverLocation</span> <span class="o">=</span> <span class="s">"C:\CODE_PATHS\PY\geckodriver.exe"</span>
+    <span class="n">browser</span> <span class="o">=</span> <span class="n">webdriver</span><span class="p">.</span><span class="n">Firefox</span><span class="p">(</span><span class="n">executable_path</span><span class="o">=</span><span class="n">driverLocation</span><span class="p">)</span>
 
-    <span class="n">mainData</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    <span class="n">mainData</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">()</span>
 
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">links_list</span><span class="p">:</span>
-        <span class="n">browser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
-        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">browser</span><span class="o">.</span><span class="n">find_element_by_class_name</span><span class="p">(</span><span class="s">'stat-table'</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
-        <span class="n">dataName</span> <span class="o">=</span> <span class="n">browser</span><span class="o">.</span><span class="n">find_element_by_tag_name</span><span class="p">(</span><span class="s">'h1'</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
-        <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dataName</span><span class="p">)</span>
-        <span class="n">singleData</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([[</span><span class="n">data</span><span class="p">[</span><span class="mi">26</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="mi">8</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="mi">9</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="mi">12</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="mi">13</span><span class="p">],</span>
+        <span class="n">browser</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+        <span class="n">time</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">browser</span><span class="p">.</span><span class="n">find_element_by_class_name</span><span class="p">(</span><span class="s">'stat-table'</span><span class="p">).</span><span class="n">text</span>
+        <span class="n">dataName</span> <span class="o">=</span> <span class="n">browser</span><span class="p">.</span><span class="n">find_element_by_tag_name</span><span class="p">(</span><span class="s">'h1'</span><span class="p">).</span><span class="n">text</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+        <span class="n">data</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">dataName</span><span class="p">)</span>
+        <span class="n">singleData</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">([[</span><span class="n">data</span><span class="p">[</span><span class="mi">26</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="mi">8</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="mi">9</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="mi">12</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="mi">13</span><span class="p">],</span>
                               <span class="n">data</span><span class="p">[</span><span class="mi">17</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="mi">18</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="mi">19</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="mi">20</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="mi">21</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="mi">22</span><span class="p">],</span>
                                  <span class="n">data</span><span class="p">[</span><span class="mi">23</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="mi">24</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="mi">25</span><span class="p">]]],</span>
                 <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s">'INDUSTRY'</span><span class="p">,</span> <span class="s">'ANNUAL_REVENUE'</span><span class="p">,</span> <span class="s">'COUNT_BUSINESSES'</span><span class="p">,</span>
@@ -223,14 +220,14 @@
                           <span class="s">'IMPORTS'</span><span class="p">,</span> <span class="s">'EXPORTS'</span><span class="p">,</span> <span class="s">'EMPLOYMENT_GROWTH_SINCE_2013'</span><span class="p">,</span> <span class="s">'IMPORT_GROWTH_SINCE_2013'</span><span class="p">,</span>
                           <span class="s">'EXPORT_GROWTH_SINCE_2013'</span><span class="p">,</span> <span class="s">'EMPLOYMENT_FORECAST_TO_2023'</span><span class="p">,</span> <span class="s">'IMPORT_FORECAST_TO_2023'</span><span class="p">,</span>
                           <span class="s">'EXPORT_FORECAST_TO_2023'</span><span class="p">])</span>
-        <span class="n">mainData</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">mainData</span><span class="p">,</span> <span class="n">singleData</span><span class="p">])</span>
+        <span class="n">mainData</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">concat</span><span class="p">([</span><span class="n">mainData</span><span class="p">,</span> <span class="n">singleData</span><span class="p">])</span>
         <span class="n">data</span> <span class="o">=</span><span class="p">[]</span>
-    <span class="n">mainData</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+    <span class="n">mainData</span><span class="p">.</span><span class="n">reset_index</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">mainData</span>
 </code></pre></div></div>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">final</span> <span class="o">=</span> <span class="n">table_getter</span><span class="p">(</span><span class="n">links</span><span class="p">)</span>
-<span class="n">final</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">inplace</span> <span class="o">=</span> <span class="bp">True</span> <span class="p">)</span>
+<span class="n">final</span><span class="p">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">inplace</span> <span class="o">=</span> <span class="bp">True</span> <span class="p">)</span>
 </code></pre></div></div>
 
 <style scoped="">
@@ -315,8 +312,6 @@
                 </small>
             </p>
 
-
-
             <!-- Prev/Next -->
             <div class="row PageNavigation mt-4 prevnextlinks">
               
@@ -329,15 +324,15 @@
             <!-- End Prev/Next -->
 
 <!--
-             <!-- Author Box
+             Author Box
                 
 				<div class="row post-top-meta">
 					<div class="col-md-2">
 						<img class="author-thumb" src="https://www.gravatar.com/avatar/?s=250&d=mm&r=x" alt="Tom">
 					</div>
 					<div class="col-md-10">
-						<a target="_blank" class="link-dark" href="https://tomscolaro.com">Tom</a><a target="_blank" href="https://github.com/tomscolaro" class="btn follow">Follow</a>
-						<span class="author-description">Author this blog. Data Scientist and Developer</span>
+						<a target="_blank" class="link-dark" href="https://tomscolaro.com">Tom</a><a target="_blank" href="" class="btn follow">Follow</a>
+						<span class="author-description">Author of this blog. Data Scientist and Developer</span>
 					</div>
 				</div>
                  -->
@@ -389,10 +384,7 @@
     <div class="col-sm-6 text-left footersocial">
       <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-              <a class="nav-link" href="/index.html">Home</a>
-          </li>
-          <li class="nav-item">
-              <a class="nav-link" href="/articles.html">Articles</a>
+              <a class="nav-link" href="/">Articles</a>
           </li>
          
           <li class="nav-item">

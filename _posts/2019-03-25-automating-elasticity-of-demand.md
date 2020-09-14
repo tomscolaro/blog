@@ -4,11 +4,9 @@ title:  "Automating Economics to Drive Growth"
 author: Tom
 categories: [ Articles, Python, Economics]
 image: assets/images/elasticity-article.jpg
-featured: true
+
 
 ---
-
-
 This write up is for measuring the elasticity of demand for individual products in a company's portfolio. Using the results we can optimize pricing to grow revenue. This is especially effective in developed markets where historic data allows for more accuracy results. The math is fairly straightforward, as the function simply using OLS linear regression, and iterate through using a simple python loop.    
 
 Elasticity of demand measures the sensitivity of pricing for a consumer. This measure is invaluable in creating effective pricing strategies. Simply, elasticity of demand is a partial derivative of a demand curve. When you assume a linear demand curve, it is simple as M in y = mx + b. In reality, a demand curve is not linear. It is only assumed to be so when we try to simplify some integral and derivative calculations. To truly calculate elasticity of demand, the partial derivative needs to be calculated and multiple with Delta P/ Delta Q.  

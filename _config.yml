@@ -18,10 +18,9 @@ authors:
   Tom:
     name: Tom
     display_name: Tom
-    email: contact@gmail.com
+    email: contact@tomscolaro.com
     web: https://tomscolaro.com
-    twitter: https://github.com/tomscolaro
-    description: "Author this blog. Data Scientist and Developer"
+    description: "Author of this blog. Data Scientist and Developer"
 
 plugins:
   - jekyll-paginate
@@ -37,11 +36,6 @@ jekyll-archives:
   layout: archive
   permalinks:
     category: '/category/:name/'
-
-
-
-
-
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list

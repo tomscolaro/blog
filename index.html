@@ -2,29 +2,44 @@
 layout: default
 title: Home
 ---
-
-<!-- Featured
+<!-- Posts Index
 ================================================== -->
-<section class="featured-posts">
+<!--
+{% if paginator.previous_page %}
+{% if paginator.previous_page > 0 %}
+<div id="jumptopageof"></div>
+{% endif %}
+{% endif %}
+-->
 
-    <div class="section-title">
-        <h2><span>Featured Articles</span></h2>
-    </div>
 
-    <div class="row listfeaturedtag">
+<section class="recent-posts row">
+      <div class="col-sm-12">
 
-    {% for post in site.posts %}
+          <div class="section-title">
+              <h2><span>All Articles </span></h2>
+          </div>
 
-        {% if post.featured == true %}
+          <div class="masonrygrid row listrecent">
 
-       
-            {% include featuredbox.html %}
+                {% for post in site.posts %}  
 
-      
+                          {% include postbox.html %}
 
-        {% endif %}
+                      {% endfor %}
 
-    {% endfor %}
+  </div>
+
+        <!-- Pagination
+        <div class="bottompagination">
+
+            <span class="navigation" role="navigation">
+
+                {% include pagination.html %}
+
+            </span>
+
+        </div> -->
 
     </div>
 

@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link rel="icon" href="/assets/images/favicon.png">
 <title>Automating Economics to Drive Growth | Tom Scolaro</title>
-<!-- Begin Jekyll SEO tag v2.5.0 -->
+<!-- Begin Jekyll SEO tag v2.6.1 -->
 <title>Automating Economics to Drive Growth | Tom Scolaro</title>
-<meta name="generator" content="Jekyll v3.8.6" />
+<meta name="generator" content="Jekyll v3.8.7" />
 <meta property="og:title" content="Automating Economics to Drive Growth" />
 <meta name="author" content="Tom" />
 <meta property="og:locale" content="en_US" />
@@ -20,7 +20,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2019-03-25T00:00:00-05:00" />
 <script type="application/ld+json">
-{"@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/articles/python/economics/2019/03/25/automating-elasticity-of-demand.html"},"url":"http://localhost:4000/articles/python/economics/2019/03/25/automating-elasticity-of-demand.html","dateModified":"2019-03-25T00:00:00-05:00","datePublished":"2019-03-25T00:00:00-05:00","headline":"Automating Economics to Drive Growth","author":{"@type":"Person","name":"Tom"},"image":"http://localhost:4000/assets/images/elasticity-article.jpg","description":"This write up is for measuring the elasticity of demand for individual products in a company’s portfolio. Using the results we can optimize pricing to grow revenue. This is especially effective in developed markets where historic data allows for more accuracy results. The math is fairly straightforward, as the function simply using OLS linear regression, and iterate through using a simple python loop.","@context":"http://schema.org"}</script>
+{"url":"http://localhost:4000/articles/python/economics/2019/03/25/automating-elasticity-of-demand.html","author":{"@type":"Person","name":"Tom"},"headline":"Automating Economics to Drive Growth","datePublished":"2019-03-25T00:00:00-05:00","dateModified":"2019-03-25T00:00:00-05:00","description":"This write up is for measuring the elasticity of demand for individual products in a company’s portfolio. Using the results we can optimize pricing to grow revenue. This is especially effective in developed markets where historic data allows for more accuracy results. The math is fairly straightforward, as the function simply using OLS linear regression, and iterate through using a simple python loop.","image":"http://localhost:4000/assets/images/elasticity-article.jpg","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/articles/python/economics/2019/03/25/automating-elasticity-of-demand.html"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
@@ -70,10 +70,7 @@
             <!-- Begin Menu -->
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/index.html">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/articles.html">Articles</a>
+                    <a class="nav-link" href="/">Articles</a>
                 </li>
                
                 <li class="nav-item">
@@ -180,25 +177,25 @@
 <p>Our EOD() function filters based on individual product keys and reshapes Pandas series into NumPy columns arrays. WE transform the values into log values. In the end this will change the way we interpret the results from a regular regression. When using a log-log regression the result would be “A X% change in the price would elicit a Beta*X% change in quantity purchased”. The model is then fitted and only the parameter we find most important are written into a data frame.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">EOD</span><span class="p">(</span><span class="n">FILTER</span><span class="p">,</span> <span class="n">DF</span><span class="p">,</span>  <span class="n">MEASURE_ON</span> <span class="o">=</span> <span class="s">'PROD_KEY'</span><span class="p">):</span>
-    <span class="n">DF</span> <span class="o">=</span> <span class="n">DF</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">DF</span><span class="p">[</span><span class="n">MEASURE_ON</span><span class="p">]</span> <span class="o">==</span> <span class="n">FILTER</span><span class="p">,</span> <span class="p">[</span><span class="s">'UNIT_PRICE'</span> <span class="p">,</span> <span class="s">'QUANTITY'</span><span class="p">]]</span>
+    <span class="n">DF</span> <span class="o">=</span> <span class="n">DF</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="n">DF</span><span class="p">[</span><span class="n">MEASURE_ON</span><span class="p">]</span> <span class="o">==</span> <span class="n">FILTER</span><span class="p">,</span> <span class="p">[</span><span class="s">'UNIT_PRICE'</span> <span class="p">,</span> <span class="s">'QUANTITY'</span><span class="p">]]</span>
 
     <span class="c1">#col format ,'UNIT_PRICE_2']
-</span>    <span class="n">x</span> <span class="o">=</span> <span class="n">DF</span><span class="p">[</span><span class="s">'UNIT_PRICE'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="n">DF</span><span class="p">[</span><span class="s">'QUANTITY'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span>    <span class="n">x</span> <span class="o">=</span> <span class="n">DF</span><span class="p">[</span><span class="s">'UNIT_PRICE'</span><span class="p">].</span><span class="n">values</span><span class="p">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">DF</span><span class="p">[</span><span class="s">'QUANTITY'</span><span class="p">].</span><span class="n">values</span><span class="p">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
     <span class="c1"># log-log conversion
-</span>    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+</span>    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">log</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
 
-    <span class="n">data</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">add_constant</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="n">model</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">sm</span><span class="p">.</span><span class="n">add_constant</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">sm</span><span class="p">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">data</span><span class="p">).</span><span class="n">fit</span><span class="p">()</span>
 
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">A</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">params</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="n">B</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">rsquared</span>
-        <span class="n">C</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">pvalues</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="n">D</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">conf_int</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="bp">None</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="c1">#50% confidence interval
-</span>        <span class="n">E</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">conf_int</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="bp">None</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="c1">#50% confidence interval
-</span>        <span class="n">F</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">params</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">B</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">rsquared</span>
+        <span class="n">C</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">pvalues</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">conf_int</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="bp">None</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="c1">#50% confidence interval
+</span>        <span class="n">E</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">conf_int</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="bp">None</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="c1">#50% confidence interval
+</span>        <span class="n">F</span> <span class="o">=</span> <span class="n">x</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">model</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="k">except</span><span class="p">:</span>
         <span class="n">A</span> <span class="o">=</span> <span class="mi">0</span>
@@ -212,10 +209,10 @@
 </code></pre></div></div>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#Read your data here
-</span><span class="n">DF</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">()</span>
+</span><span class="n">DF</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_csv</span><span class="p">()</span>
 
 <span class="c1">#Data sanity check
-</span><span class="n">DF</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</span><span class="n">DF</span><span class="p">.</span><span class="n">head</span><span class="p">()</span>
 </code></pre></div></div>
 
 <div>
@@ -278,15 +275,15 @@
 
 <p>Here we are creating a list of product keys that we want to iterate through to find elasticities for.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">PRODS</span> <span class="o">=</span> <span class="n">DF</span><span class="p">[</span><span class="s">'PROD_KEY'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
-<span class="n">PRODS</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">PRODS</span><span class="p">)</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">PRODS</span> <span class="o">=</span> <span class="n">DF</span><span class="p">[</span><span class="s">'PROD_KEY'</span><span class="p">].</span><span class="n">values</span>
+<span class="n">PRODS</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">unique</span><span class="p">(</span><span class="n">PRODS</span><span class="p">)</span>
 </code></pre></div></div>
 
 <p>This is essentially what the EOD() function is doing, but is only selecting certain parameters from the model.summary().  The add_constant() method adds an column of ones to an array. By default sm.OLS doesn’t include an intercept, so needs to be added to preform a legitimate OLS regression. An OLS regression stands for Ordinary Least Squares. In a sentence, It minimizes the sum of squared error for a given model against the observed values.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">data</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">add_constant</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">data</span> <span class="o">=</span> <span class="n">sm</span><span class="p">.</span><span class="n">add_constant</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">sm</span><span class="p">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">data</span><span class="p">).</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">model</span><span class="p">.</span><span class="n">summary</span><span class="p">()</span>
 
 </code></pre></div></div>
 
@@ -348,14 +345,14 @@
 
 <p>Here we are iterating through each of the product keys and storing them in a Pandas DataFrame for easy manipulation, export, or analysis. The beta of the each product should be negative, and only in rare cases is the beta zero. In ever rarer cases it can be positive. In which case, your data either lacks enough observations for that product, a weird deal structure created an anomaly or that product is a Giffen or Veblen good. The most latter case is incredibly rare, so I would be relatively confident in writing that possibility off for one of the former cases.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s">'PROD_KEY'</span><span class="p">,</span> <span class="s">'BETA'</span><span class="p">,</span> <span class="s">'PVAL'</span><span class="p">,</span> <span class="s">'P25'</span><span class="p">,</span> <span class="s">'P75'</span> <span class="p">,</span> <span class="s">'R2'</span><span class="p">,</span> <span class="s">'Records'</span><span class="p">])</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">PRODS</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>   
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s">'PROD_KEY'</span><span class="p">,</span> <span class="s">'BETA'</span><span class="p">,</span> <span class="s">'PVAL'</span><span class="p">,</span> <span class="s">'P25'</span><span class="p">,</span> <span class="s">'P75'</span> <span class="p">,</span> <span class="s">'R2'</span><span class="p">,</span> <span class="s">'Records'</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">PRODS</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>   
     <span class="n">Beta</span><span class="p">,</span> <span class="n">Rsquare</span><span class="p">,</span><span class="n">Pval</span><span class="p">,</span> <span class="n">P25</span><span class="p">,</span> <span class="n">P75</span><span class="p">,</span> <span class="n">Records</span> <span class="o">=</span> <span class="n">EOD</span><span class="p">(</span><span class="n">PRODS</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">DF</span><span class="p">)</span>
-    <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">PRODS</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">Beta</span><span class="p">,</span> <span class="n">Pval</span><span class="p">,</span> <span class="n">P25</span><span class="p">,</span> <span class="n">P75</span><span class="p">,</span> <span class="n">Rsquare</span><span class="p">,</span> <span class="n">Records</span><span class="p">]</span>
+    <span class="n">df</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">PRODS</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">Beta</span><span class="p">,</span> <span class="n">Pval</span><span class="p">,</span> <span class="n">P25</span><span class="p">,</span> <span class="n">P75</span><span class="p">,</span> <span class="n">Rsquare</span><span class="p">,</span> <span class="n">Records</span><span class="p">]</span>
 
 </code></pre></div></div>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span><span class="p">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 </code></pre></div></div>
 
 <div>
@@ -434,29 +431,27 @@
                 </small>
             </p>
 
-
-
             <!-- Prev/Next -->
             <div class="row PageNavigation mt-4 prevnextlinks">
               
               
                 <div class="col-md-6 text-right pr-0">
-                    <a class="thepostlink" href="http://localhost:4000/articles/python/utilities/2019/03/25/data-for-free.html">Taking Free Data &raquo;</a>
+                    <a class="thepostlink" href="http://localhost:4000/articles/python/utilities/2019/03/25/data-for-free.html">Web Scraping 4 Dummies &raquo;</a>
                 </div>
               
             </div>
             <!-- End Prev/Next -->
 
 <!--
-             <!-- Author Box
+             Author Box
                 
 				<div class="row post-top-meta">
 					<div class="col-md-2">
 						<img class="author-thumb" src="https://www.gravatar.com/avatar/?s=250&d=mm&r=x" alt="Tom">
 					</div>
 					<div class="col-md-10">
-						<a target="_blank" class="link-dark" href="https://tomscolaro.com">Tom</a><a target="_blank" href="https://github.com/tomscolaro" class="btn follow">Follow</a>
-						<span class="author-description">Author this blog. Data Scientist and Developer</span>
+						<a target="_blank" class="link-dark" href="https://tomscolaro.com">Tom</a><a target="_blank" href="" class="btn follow">Follow</a>
+						<span class="author-description">Author of this blog. Data Scientist and Developer</span>
 					</div>
 				</div>
                  -->
@@ -508,10 +503,7 @@
     <div class="col-sm-6 text-left footersocial">
       <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-              <a class="nav-link" href="/index.html">Home</a>
-          </li>
-          <li class="nav-item">
-              <a class="nav-link" href="/articles.html">Articles</a>
+              <a class="nav-link" href="/">Articles</a>
           </li>
          
           <li class="nav-item">

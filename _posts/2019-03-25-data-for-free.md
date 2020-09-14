@@ -1,11 +1,9 @@
 ---
 layout: post
-title:  "Taking Free Data"
+title:  "Web Scraping 4 Dummies"
 author: Tom
 categories: [ Articles, Python,  utilities]
 image: assets/images/web-scraper-article.jpg
-featured: true
-
 ---
 
 
