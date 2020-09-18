@@ -1,4 +1,506 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-09-14T13:10:28-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Tom Scolaro</title><subtitle>Data Science &amp; Software Development</subtitle><entry><title type="html">Automating Economics to Drive Growth</title><link href="http://localhost:4000/articles/python/economics/2019/03/25/automating-elasticity-of-demand.html" rel="alternate" type="text/html" title="Automating Economics to Drive Growth" /><published>2019-03-25T00:00:00-05:00</published><updated>2019-03-25T00:00:00-05:00</updated><id>http://localhost:4000/articles/python/economics/2019/03/25/automating-elasticity-of-demand</id><content type="html" xml:base="http://localhost:4000/articles/python/economics/2019/03/25/automating-elasticity-of-demand.html">&lt;p&gt;This write up is for measuring the elasticity of demand for individual products in a company’s portfolio. Using the results we can optimize pricing to grow revenue. This is especially effective in developed markets where historic data allows for more accuracy results. The math is fairly straightforward, as the function simply using OLS linear regression, and iterate through using a simple python loop.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-09-18T15:29:23-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Tom Scolaro</title><subtitle>Data Science &amp; Software Development</subtitle><entry><title type="html">Association Rules Explained</title><link href="http://localhost:4000/articles/python/analysis/recommenders/2020/09/16/Association-Rules.html" rel="alternate" type="text/html" title="Association Rules Explained" /><published>2020-09-16T00:00:00-05:00</published><updated>2020-09-16T00:00:00-05:00</updated><id>http://localhost:4000/articles/python/analysis/recommenders/2020/09/16/Association-Rules</id><content type="html" xml:base="http://localhost:4000/articles/python/analysis/recommenders/2020/09/16/Association-Rules.html">&lt;p&gt;Often times, data scientists work with a non-technical audiences that have little to no experience in the either computer science, statistics or machine learning. This is okay, because there is a need for variety in roles across a team or company. However, poses interesting challenges in dignifying certain analytics based projects with the value and resources that they deserve. As a result, the burden of socializing the value of these types of projects lies on the data scientists themselves.&lt;/p&gt;
+
+&lt;p&gt;The adoption of these analytics practices is a challenging undertaking for a team or company without a mature approach to tech innovation. Lagging companies often rely on heuristics or anecdotals rather than empirical evidence. One way analytics professionals can make a difference in pushing data driven culture forward is to earn credibility by being clear in explanation of methodology. Too often, data scientists explain esoteric topics with a hand wave and a broad generalization which comes off as disingenuous.&lt;/p&gt;
+
+&lt;p&gt;The way to build creditability in these situations is to start with something simple, something to get stakeholders and peers thinking about applicable problems. As an example, in the field of recommenders, association rule mining is a good technique to begin with, because it is simple enough to understand out of the box. There is no, misleading generalizations and can be understood by most with a simple demonstration (something that cannot be said for more advanced techniques). While it may not be as exciting, a successful of campaign or project incorporating these rules in marketing, sales or category management can lead the way in opening people up to additional methodologies. But the trust between the data scientist and the peers needs to be established first.&lt;/p&gt;
+
+&lt;p&gt;Now that we can see the value in implementing such rules, what can they be used for? and how is it done? Both of these will be answered by the end of this post, so that way you can begin to implement these into your data science pipeline.&lt;/p&gt;
+
+&lt;h2 id=&quot;what-is-it-good-for&quot;&gt;What is it good for?&lt;/h2&gt;
+
+&lt;p&gt;Ultimately, association rule mining is a method that creates if-then statements centered around product baskets. As an example, if you were in the grocery store, and you bought peanut butter then you would probably be more likely to also buy jelly. While it seems like an asinine, common sense judgement, these types of relationships exist in all industries and can be leveraged to improve a company operational efficiency. Here are a few of the applications of association rules:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Marketing campaigns that your team is riding on so much can be improved in leads generated or click through&lt;/li&gt;
+  &lt;li&gt;The sales team trying to find products to upsell can easily be found&lt;/li&gt;
+  &lt;li&gt;Supply chain issues you’ve been having because of inefficient storage&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Generally, these rules are useful in synthesizing alike products and complements. I may do a specific post on the application recommenders, but it out of the scope of this post.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-math&quot;&gt;The Math&lt;/h2&gt;
+
+&lt;p&gt;Now to implement the algorithm itself. I am using my version of association rules available &lt;a href=&quot;https://github.com/tomscolaro/associationrules&quot;&gt;here&lt;/a&gt;. There are 3 key calculations that association rules mining accounts for: support, confidence and lift.&lt;/p&gt;
+
+&lt;h3 id=&quot;support&quot;&gt;Support&lt;/h3&gt;
+&lt;p&gt;Support can be thought of as the frequency of occurrence in a transaction set. If apples are present twice in a set of 5 transactions, then the support is .4.  This is done of each combination of products above a threshold, which allows for faster computation. The support of A (a product or a combination in the set N) is:&lt;/p&gt;
+
+\[Support(A) = \dfrac{\sigma ({A})}{ \vert T \vert} &amp;gt; SupportThreshold\]
+
+\[A = {N \choose x}\]
+
+&lt;p&gt;where $\sigma$ denotes the frequency of occurrence in the set. It is also important to note that the number of elements in the combination are \(0 &amp;lt; x &amp;lt; { \vert T \vert}\).&lt;/p&gt;
+
+&lt;h3 id=&quot;confidence&quot;&gt;Confidence&lt;/h3&gt;
+
+&lt;p&gt;Confidence brings the idea of antecedent and consequents into the mix. An antecedent is the product purchased to begin with (the “if” part of the rules), and the consequent would be the product recommended in response to the antecedent (the “then” part of the rule). The confidence is how many times in a transaction set that the rule appears to be true. Statistically, this is likened to the conditional probability \(pr(B  \vert  A)\).  The name of the measurement would suggest this is “accuracy”, but this isn’t necessarily true. As confidence will be higher if the consequent has a high support, regardless of the relationship between the antecedent and consequent.&lt;/p&gt;
+
+\[Confidence(A \to\, B) = \dfrac{Support({A \cup B})}{Support(A)}\]
+
+&lt;h3 id=&quot;lift&quot;&gt;Lift&lt;/h3&gt;
+
+&lt;p&gt;Lift is probably the most important measure of association rules mining. Essentially, it measures how good the rule is. Because lift assumes statistical independence between the antecedent and the consequent in the denominator and uses joint probability in numerator, we can infer whether there is conditional dependence between the antecedent and consequent.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;When lift &amp;gt; 1 the antecedent and consequent occur together more frequently, implying that the A and B are dependent and occur at higher frequencies. The higher the better, and we want to use these rules as much as we can.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;When lift &amp;lt; 1 the antecedent and consequent occur together less frequently, implying that the A and B are dependent and occur at lower frequencies. The closer to 0 that the rule is, the worse the rule would perform. However, we can use this to avoid sub optimal decisions. As an example, in a limited shelving space display, avoiding placing poor lift baskets together.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;When lift \({ \approx }\) 1 the antecedent and consequent occur at about the same frequency. This would suggest that the association of the two rules is just by random chance.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+\[Lift(A \to\, B) =\dfrac{Support({A \cup B})}{Support{(A)}* Support{(B)}}\]
+
+&lt;h2 id=&quot;implementation&quot;&gt;Implementation&lt;/h2&gt;
+
+&lt;p&gt;Import the libraries used in the project. association_rules is available &lt;a href=&quot;https://github.com/tomscolaro/associationrules&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pandas&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pd&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;numpy&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;association_rules&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ar&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Read in the transaction data. Each product is associated with a transaction id where 1 or more products can be purchased at a time.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;read_csv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'../data/sales_data.csv'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div&gt;
+&lt;style scoped=&quot;&quot;&gt;
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+&lt;/style&gt;
+&lt;table border=&quot;1&quot; class=&quot;dataframe&quot;&gt;
+  &lt;thead&gt;
+    &lt;tr style=&quot;text-align: right;&quot;&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;SALES_ID&lt;/th&gt;
+      &lt;th&gt;PRODUCT&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;th&gt;0&lt;/th&gt;
+      &lt;td&gt;1001&lt;/td&gt;
+      &lt;td&gt;Tortillas&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;1&lt;/th&gt;
+      &lt;td&gt;1001&lt;/td&gt;
+      &lt;td&gt;Eggs&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;2&lt;/th&gt;
+      &lt;td&gt;1001&lt;/td&gt;
+      &lt;td&gt;Bacon&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;3&lt;/th&gt;
+      &lt;td&gt;1001&lt;/td&gt;
+      &lt;td&gt;Cheddar&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;4&lt;/th&gt;
+      &lt;td&gt;1001&lt;/td&gt;
+      &lt;td&gt;Avocado&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This step is just data exploration. The dataset we are using is a mock up, so it is cleaned and ready to go. However, in reality more exploration would be needed to clean and preprocess the data. We can see that beer, milk and cookies all have high occurances in the data set, so we can infer there will be rules including some of them.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'PRODUCT'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;value_counts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;plot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;barh&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2020-9-16-barplot.png&quot; alt=&quot;barplot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;For the linked repo, the data must be a boolean dataframe with the products in the columns, where each row signifies a transaction. This can be accomplished by using the pivot pandas method and replacing null values with True/False values.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pivot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'SALES_ID'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;columns&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'PRODUCT'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;values&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'PRODUCT'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DataFrame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;where&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isnull&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;False&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;columns&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;columns&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;copy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div&gt;
+&lt;style scoped=&quot;&quot;&gt;
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+&lt;/style&gt;
+&lt;table border=&quot;1&quot; class=&quot;dataframe&quot;&gt;
+  &lt;thead&gt;
+    &lt;tr style=&quot;text-align: right;&quot;&gt;
+      &lt;th&gt;PRODUCT&lt;/th&gt;
+      &lt;th&gt;Avocado&lt;/th&gt;
+      &lt;th&gt;Bacon&lt;/th&gt;
+      &lt;th&gt;Beef&lt;/th&gt;
+      &lt;th&gt;Beer&lt;/th&gt;
+      &lt;th&gt;Cheddar&lt;/th&gt;
+      &lt;th&gt;Chicken&lt;/th&gt;
+      &lt;th&gt;Chocolate&lt;/th&gt;
+      &lt;th&gt;Cookies&lt;/th&gt;
+      &lt;th&gt;Eggs&lt;/th&gt;
+      &lt;th&gt;Frozen Pizza&lt;/th&gt;
+      &lt;th&gt;Ice Cream&lt;/th&gt;
+      &lt;th&gt;Ice Cream Cones&lt;/th&gt;
+      &lt;th&gt;Milk&lt;/th&gt;
+      &lt;th&gt;Salsa&lt;/th&gt;
+      &lt;th&gt;Tortillas&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;th&gt;0&lt;/th&gt;
+      &lt;td&gt;True&lt;/td&gt;
+      &lt;td&gt;True&lt;/td&gt;
+      &lt;td&gt;True&lt;/td&gt;
+      &lt;td&gt;True&lt;/td&gt;
+      &lt;td&gt;True&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;True&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;True&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;True&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;1&lt;/th&gt;
+      &lt;td&gt;True&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;True&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;True&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;True&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;2&lt;/th&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;True&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;True&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;3&lt;/th&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;True&lt;/td&gt;
+      &lt;td&gt;True&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;True&lt;/td&gt;
+      &lt;td&gt;True&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;True&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;4&lt;/th&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;True&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;True&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;True&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The association rules object is initiated with the boolean dataframe from the previous step along with threshold type and level. It defaults to support and .3, respectively, but can limited by lift or confidence as well.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;association_rules&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;association_rules&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;threshold_type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'support'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;threshold_level&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;We can access the support, confidence or lift rules by using any of the .get_support(), .get_confidence() or .get_lift() methods.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;support&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;association_rules&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get_support&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sort_values&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'support'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ascending&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;False&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;support&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div&gt;
+&lt;style scoped=&quot;&quot;&gt;
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+&lt;/style&gt;
+&lt;table border=&quot;1&quot; class=&quot;dataframe&quot;&gt;
+  &lt;thead&gt;
+    &lt;tr style=&quot;text-align: right;&quot;&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;support&lt;/th&gt;
+      &lt;th&gt;products&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;th&gt;11&lt;/th&gt;
+      &lt;td&gt;0.666667&lt;/td&gt;
+      &lt;td&gt;Milk&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;8&lt;/th&gt;
+      &lt;td&gt;0.555556&lt;/td&gt;
+      &lt;td&gt;Beer&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;9&lt;/th&gt;
+      &lt;td&gt;0.444444&lt;/td&gt;
+      &lt;td&gt;Cookies&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;12&lt;/th&gt;
+      &lt;td&gt;0.444444&lt;/td&gt;
+      &lt;td&gt;Tortillas&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;0&lt;/th&gt;
+      &lt;td&gt;0.333333&lt;/td&gt;
+      &lt;td&gt;Avocado, Beer&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;1&lt;/th&gt;
+      &lt;td&gt;0.333333&lt;/td&gt;
+      &lt;td&gt;Bacon, Eggs&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;2&lt;/th&gt;
+      &lt;td&gt;0.333333&lt;/td&gt;
+      &lt;td&gt;Beer, Milk&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;3&lt;/th&gt;
+      &lt;td&gt;0.333333&lt;/td&gt;
+      &lt;td&gt;Beer, Tortillas&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;4&lt;/th&gt;
+      &lt;td&gt;0.333333&lt;/td&gt;
+      &lt;td&gt;Cookies, Milk&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;5&lt;/th&gt;
+      &lt;td&gt;0.333333&lt;/td&gt;
+      &lt;td&gt;Avocado&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;6&lt;/th&gt;
+      &lt;td&gt;0.333333&lt;/td&gt;
+      &lt;td&gt;Bacon&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;7&lt;/th&gt;
+      &lt;td&gt;0.333333&lt;/td&gt;
+      &lt;td&gt;Beef&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;10&lt;/th&gt;
+      &lt;td&gt;0.333333&lt;/td&gt;
+      &lt;td&gt;Eggs&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Finally, we can access the total rules with the .get_rules() method. Viewing the rules from the mock dataset, we can see that Bacon and Eggs is a valuable rule with a lift of 3.0 and a rule to avoid would be Milk and Beer with a lift of 0.9.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;rules&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;association_rules&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get_rules&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;rules&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div&gt;
+&lt;style scoped=&quot;&quot;&gt;
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+&lt;/style&gt;
+&lt;table border=&quot;1&quot; class=&quot;dataframe&quot;&gt;
+  &lt;thead&gt;
+    &lt;tr style=&quot;text-align: right;&quot;&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;antecedent&lt;/th&gt;
+      &lt;th&gt;consequent&lt;/th&gt;
+      &lt;th&gt;antecedent_support&lt;/th&gt;
+      &lt;th&gt;consequent_support&lt;/th&gt;
+      &lt;th&gt;confidence&lt;/th&gt;
+      &lt;th&gt;lift&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;th&gt;0&lt;/th&gt;
+      &lt;td&gt;Avocado&lt;/td&gt;
+      &lt;td&gt;Beer&lt;/td&gt;
+      &lt;td&gt;0.333333&lt;/td&gt;
+      &lt;td&gt;0.555556&lt;/td&gt;
+      &lt;td&gt;1.00&lt;/td&gt;
+      &lt;td&gt;1.800&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;1&lt;/th&gt;
+      &lt;td&gt;Milk&lt;/td&gt;
+      &lt;td&gt;Beer&lt;/td&gt;
+      &lt;td&gt;0.666667&lt;/td&gt;
+      &lt;td&gt;0.555556&lt;/td&gt;
+      &lt;td&gt;0.50&lt;/td&gt;
+      &lt;td&gt;0.900&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;2&lt;/th&gt;
+      &lt;td&gt;Tortillas&lt;/td&gt;
+      &lt;td&gt;Beer&lt;/td&gt;
+      &lt;td&gt;0.444444&lt;/td&gt;
+      &lt;td&gt;0.555556&lt;/td&gt;
+      &lt;td&gt;0.75&lt;/td&gt;
+      &lt;td&gt;1.350&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;3&lt;/th&gt;
+      &lt;td&gt;Bacon&lt;/td&gt;
+      &lt;td&gt;Eggs&lt;/td&gt;
+      &lt;td&gt;0.333333&lt;/td&gt;
+      &lt;td&gt;0.333333&lt;/td&gt;
+      &lt;td&gt;1.00&lt;/td&gt;
+      &lt;td&gt;3.000&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;4&lt;/th&gt;
+      &lt;td&gt;Beer&lt;/td&gt;
+      &lt;td&gt;Avocado&lt;/td&gt;
+      &lt;td&gt;0.555556&lt;/td&gt;
+      &lt;td&gt;0.333333&lt;/td&gt;
+      &lt;td&gt;0.60&lt;/td&gt;
+      &lt;td&gt;1.800&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;5&lt;/th&gt;
+      &lt;td&gt;Beer&lt;/td&gt;
+      &lt;td&gt;Milk&lt;/td&gt;
+      &lt;td&gt;0.555556&lt;/td&gt;
+      &lt;td&gt;0.666667&lt;/td&gt;
+      &lt;td&gt;0.60&lt;/td&gt;
+      &lt;td&gt;0.900&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;6&lt;/th&gt;
+      &lt;td&gt;Cookies&lt;/td&gt;
+      &lt;td&gt;Milk&lt;/td&gt;
+      &lt;td&gt;0.444444&lt;/td&gt;
+      &lt;td&gt;0.666667&lt;/td&gt;
+      &lt;td&gt;0.75&lt;/td&gt;
+      &lt;td&gt;1.125&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;7&lt;/th&gt;
+      &lt;td&gt;Beer&lt;/td&gt;
+      &lt;td&gt;Tortillas&lt;/td&gt;
+      &lt;td&gt;0.555556&lt;/td&gt;
+      &lt;td&gt;0.444444&lt;/td&gt;
+      &lt;td&gt;0.60&lt;/td&gt;
+      &lt;td&gt;1.350&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;8&lt;/th&gt;
+      &lt;td&gt;Eggs&lt;/td&gt;
+      &lt;td&gt;Bacon&lt;/td&gt;
+      &lt;td&gt;0.333333&lt;/td&gt;
+      &lt;td&gt;0.333333&lt;/td&gt;
+      &lt;td&gt;1.00&lt;/td&gt;
+      &lt;td&gt;3.000&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;9&lt;/th&gt;
+      &lt;td&gt;Milk&lt;/td&gt;
+      &lt;td&gt;Cookies&lt;/td&gt;
+      &lt;td&gt;0.666667&lt;/td&gt;
+      &lt;td&gt;0.444444&lt;/td&gt;
+      &lt;td&gt;0.50&lt;/td&gt;
+      &lt;td&gt;1.125&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;We have seen why association rule mining is important, some potential applications for a business and an implementation of the analysis in python. Ultimately, the power that can be leveraged out of the analysis is only limited by the creativity of the solution. I urge you to try it for yourself and be inventive in the ways that association rule mining can improve your ML and technology pipelines. In future posts, I hope to build upon this and apply the outputs of the analysis to optimize of resources across marketing, sales and ops applications.&lt;/p&gt;
+
+&lt;p&gt;-Tom Scolaro &lt;a href=&quot;https://www.linkedin.com/in/thomasscolaro&quot;&gt;LinkedIn&lt;/a&gt;&lt;/p&gt;</content><author><name>Tom</name></author><category term="Articles" /><category term="Python" /><category term="Analysis" /><category term="Recommenders" /><summary type="html">Often times, data scientists work with a non-technical audiences that have little to no experience in the either computer science, statistics or machine learning. This is okay, because there is a need for variety in roles across a team or company. However, poses interesting challenges in dignifying certain analytics based projects with the value and resources that they deserve. As a result, the burden of socializing the value of these types of projects lies on the data scientists themselves.</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/images/grocery.jpg" /><media:content medium="image" url="http://localhost:4000/assets/images/grocery.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Automating Economics to Drive Growth</title><link href="http://localhost:4000/articles/python/economics/2019/03/25/automating-elasticity-of-demand.html" rel="alternate" type="text/html" title="Automating Economics to Drive Growth" /><published>2019-03-25T00:00:00-05:00</published><updated>2019-03-25T00:00:00-05:00</updated><id>http://localhost:4000/articles/python/economics/2019/03/25/automating-elasticity-of-demand</id><content type="html" xml:base="http://localhost:4000/articles/python/economics/2019/03/25/automating-elasticity-of-demand.html">&lt;p&gt;This write up is for measuring the elasticity of demand for individual products in a company’s portfolio. Using the results we can optimize pricing to grow revenue. This is especially effective in developed markets where historic data allows for more accuracy results. The math is fairly straightforward, as the function simply using OLS linear regression, and iterate through using a simple python loop.&lt;/p&gt;
 
 &lt;p&gt;Elasticity of demand measures the sensitivity of pricing for a consumer. This measure is invaluable in creating effective pricing strategies. Simply, elasticity of demand is a partial derivative of a demand curve. When you assume a linear demand curve, it is simple as M in y = mx + b. In reality, a demand curve is not linear. It is only assumed to be so when we try to simplify some integral and derivative calculations. To truly calculate elasticity of demand, the partial derivative needs to be calculated and multiple with Delta P/ Delta Q.&lt;/p&gt;
 

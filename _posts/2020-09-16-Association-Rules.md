@@ -3,12 +3,10 @@ layout: post
 title:  "Association Rules Explained"
 author: Tom
 categories: [ Articles, Python, Analysis, Recommenders]
-image: assets/images/web-scraper-article.jpg
+image: assets/images/grocery.jpg
 ---
 
 
-
-# Explanation of Association Rules
 
 Often times, data scientists work with a non-technical audiences that have little to no experience in the either computer science, statistics or machine learning. This is okay, because there is a need for variety in roles across a team or company. However, poses interesting challenges in dignifying certain analytics based projects with the value and resources that they deserve. As a result, the burden of socializing the value of these types of projects lies on the data scientists themselves. 
 
@@ -36,26 +34,26 @@ Now to implement the algorithm itself. I am using my version of association rule
 Support can be thought of as the frequency of occurrence in a transaction set. If apples are present twice in a set of 5 transactions, then the support is .4.  This is done of each combination of products above a threshold, which allows for faster computation. The support of A (a product or a combination in the set N) is:
 
 
-$
+$$
 Support(A) = \dfrac{\sigma ({A})}{ \vert T \vert} > SupportThreshold
-$
+$$
 
-$
+$$
 A = {N \choose x} 
-$
+$$
 
 
-where $\sigma$ denotes the frequency of occurrence in the set. It is also important to note that the number of elements in the combination are $0 < x < { \vert T \vert}$.
+where $\sigma$ denotes the frequency of occurrence in the set. It is also important to note that the number of elements in the combination are $$0 < x < { \vert T \vert}$$.
 
 
 
 ### Confidence
 
-Confidence brings the idea of antecedent and consequents into the mix. An antecedent is the product purchased to begin with (the "if" part of the rules), and the consequent would be the product recommended in response to the antecedent (the "then" part of the rule). The confidence is how many times in a transaction set that the rule appears to be true. Statistically, this is likened to the conditional probability $pr(B  \vert  A)$.  The name of the measurement would suggest this is "accuracy", but this isn't necessarily true. As confidence will be higher if the consequent has a high support, regardless of the relationship between the antecedent and consequent.
+Confidence brings the idea of antecedent and consequents into the mix. An antecedent is the product purchased to begin with (the "if" part of the rules), and the consequent would be the product recommended in response to the antecedent (the "then" part of the rule). The confidence is how many times in a transaction set that the rule appears to be true. Statistically, this is likened to the conditional probability $$pr(B  \vert  A)$$.  The name of the measurement would suggest this is "accuracy", but this isn't necessarily true. As confidence will be higher if the consequent has a high support, regardless of the relationship between the antecedent and consequent.
 
-$
+$$
 Confidence(A \to\, B) = \dfrac{Support({A \cup B})}{Support(A)} 
-$
+$$
 
 
 ### Lift
@@ -66,12 +64,12 @@ Lift is probably the most important measure of association rules mining. Essenti
     
    * When lift < 1 the antecedent and consequent occur together less frequently, implying that the A and B are dependent and occur at lower frequencies. The closer to 0 that the rule is, the worse the rule would perform. However, we can use this to avoid sub optimal decisions. As an example, in a limited shelving space display, avoiding placing poor lift baskets together.
 
-   * When lift ${ \approx }$ 1 the antecedent and consequent occur at about the same frequency. This would suggest that the association of the two rules is just by random chance. 
+   * When lift $${ \approx }$$ 1 the antecedent and consequent occur at about the same frequency. This would suggest that the association of the two rules is just by random chance. 
  
 
-$
+$$
 Lift(A \to\, B) =\dfrac{Support({A \cup B})}{Support{(A)}* Support{(B)}} 
-$
+$$
 
 
 ## Implementation
@@ -160,13 +158,9 @@ df['PRODUCT'].value_counts().plot.barh()
 
 
 
-    <matplotlib.axes._subplots.AxesSubplot at 0x7fbf1902a690>
 
 
-
-
-    
-![svg](Association%20Rules_files/Association%20Rules_12_1.svg)
+![barplot]({{ site.baseurl }}/assets/images/2020-9-16-barplot.png)
     
 
 

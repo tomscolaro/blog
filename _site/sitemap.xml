@@ -9,6 +9,10 @@
 <lastmod>2019-03-25T00:00:00-05:00</lastmod>
 </url>
 <url>
+<loc>http://localhost:4000/articles/python/analysis/recommenders/2020/09/16/Association-Rules.html</loc>
+<lastmod>2020-09-16T00:00:00-05:00</lastmod>
+</url>
+<url>
 <loc>http://localhost:4000/about.html</loc>
 </url>
 <url>
@@ -28,5 +32,11 @@
 </url>
 <url>
 <loc>http://localhost:4000/category/utilities/</loc>
+</url>
+<url>
+<loc>http://localhost:4000/category/analysis/</loc>
+</url>
+<url>
+<loc>http://localhost:4000/category/recommenders/</loc>
 </url>
 </urlset>
