@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-09-18T15:29:23-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Tom Scolaro</title><subtitle>Data Science &amp; Software Development</subtitle><entry><title type="html">Association Rules Explained</title><link href="http://localhost:4000/articles/python/analysis/recommenders/2020/09/16/Association-Rules.html" rel="alternate" type="text/html" title="Association Rules Explained" /><published>2020-09-16T00:00:00-05:00</published><updated>2020-09-16T00:00:00-05:00</updated><id>http://localhost:4000/articles/python/analysis/recommenders/2020/09/16/Association-Rules</id><content type="html" xml:base="http://localhost:4000/articles/python/analysis/recommenders/2020/09/16/Association-Rules.html">&lt;p&gt;Often times, data scientists work with a non-technical audiences that have little to no experience in the either computer science, statistics or machine learning. This is okay, because there is a need for variety in roles across a team or company. However, poses interesting challenges in dignifying certain analytics based projects with the value and resources that they deserve. As a result, the burden of socializing the value of these types of projects lies on the data scientists themselves.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-09-18T15:33:18-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Tom Scolaro</title><subtitle>Data Science &amp; Software Development</subtitle><entry><title type="html">Association Rules Explained</title><link href="http://localhost:4000/articles/python/analysis/recommenders/2020/09/16/Association-Rules.html" rel="alternate" type="text/html" title="Association Rules Explained" /><published>2020-09-16T00:00:00-05:00</published><updated>2020-09-16T00:00:00-05:00</updated><id>http://localhost:4000/articles/python/analysis/recommenders/2020/09/16/Association-Rules</id><content type="html" xml:base="http://localhost:4000/articles/python/analysis/recommenders/2020/09/16/Association-Rules.html">&lt;p&gt;Often times, data scientists work with a non-technical audiences that have little to no experience in the either computer science, statistics or machine learning. This is okay, because there is a need for variety in roles across a team or company. However, poses interesting challenges in dignifying certain analytics based projects with the value and resources that they deserve. As a result, the burden of socializing the value of these types of projects lies on the data scientists themselves.&lt;/p&gt;
 
 &lt;p&gt;The adoption of these analytics practices is a challenging undertaking for a team or company without a mature approach to tech innovation. Lagging companies often rely on heuristics or anecdotals rather than empirical evidence. One way analytics professionals can make a difference in pushing data driven culture forward is to earn credibility by being clear in explanation of methodology. Too often, data scientists explain esoteric topics with a hand wave and a broad generalization which comes off as disingenuous.&lt;/p&gt;
 
@@ -121,6 +121,8 @@
   &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;/div&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
 &lt;p&gt;This step is just data exploration. The dataset we are using is a mock up, so it is cleaned and ready to go. However, in reality more exploration would be needed to clean and preprocess the data. We can see that beer, milk and cookies all have high occurances in the data set, so we can infer there will be rules including some of them.&lt;/p&gt;
 
@@ -266,6 +268,8 @@
 &lt;/table&gt;
 &lt;/div&gt;
 
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
 &lt;p&gt;The association rules object is initiated with the boolean dataframe from the previous step along with threshold type and level. It defaults to support and .3, respectively, but can limited by lift or confidence as well.&lt;/p&gt;
 
 &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;association_rules&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;association_rules&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;threshold_type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'support'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;threshold_level&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
@@ -368,6 +372,8 @@
   &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;/div&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
 &lt;p&gt;Finally, we can access the total rules with the .get_rules() method. Viewing the rules from the mock dataset, we can see that Bacon and Eggs is a valuable rule with a lift of 3.0 and a rule to avoid would be Milk and Beer with a lift of 0.9.&lt;/p&gt;
 
@@ -495,6 +501,8 @@
   &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;/div&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
 

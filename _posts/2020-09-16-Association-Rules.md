@@ -147,6 +147,8 @@ df.head()
 </div>
 
 
+<br/>
+
 
 This step is just data exploration. The dataset we are using is a mock up, so it is cleaned and ready to go. However, in reality more exploration would be needed to clean and preprocess the data. We can see that beer, milk and cookies all have high occurances in the data set, so we can infer there will be rules including some of them. 
 
@@ -306,7 +308,7 @@ df.head()
 </table>
 </div>
 
-
+<br/>
 
 The association rules object is initiated with the boolean dataframe from the previous step along with threshold type and level. It defaults to support and .3, respectively, but can limited by lift or confidence as well. 
 
@@ -420,6 +422,8 @@ support
 </div>
 
 
+
+<br/>
 
 Finally, we can access the total rules with the .get_rules() method. Viewing the rules from the mock dataset, we can see that Bacon and Eggs is a valuable rule with a lift of 3.0 and a rule to avoid would be Milk and Beer with a lift of 0.9.  
 
@@ -554,6 +558,8 @@ rules
 </div>
 
 
+
+<br/>
 
 ## Conclusion
 
